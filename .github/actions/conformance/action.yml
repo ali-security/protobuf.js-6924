@@ -3,7 +3,7 @@ description: "Build and run the upstream Protocol Buffers conformance suite for 
 inputs:
   upstream-version:
     description: "Upstream protocolbuffers/protobuf tag or branch to test against."
-    default: "v34.1"
+    default: "v33.0"
   upstream-dir:
     description: "Directory where upstream protobuf is checked out."
     default: "tests/conformance/upstream"
@@ -31,7 +31,7 @@ runs:
       id: conformance-runner-cache
       with:
         path: ${{ inputs.runner-cache }}
-        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}-v3
+        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}
 
     - name: "Check out upstream protobuf"
       shell: bash
