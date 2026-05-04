@@ -88,7 +88,7 @@ function encoder(mtype) {
 
         // Non-repeated
         } else {
-            if (field.optional) gen
+            if (!field.required) gen
     ("if(%s!=null&&Object.hasOwnProperty.call(m,%j))", ref, field.name); // !== undefined && !== null
 
             if (wireType === undefined)
@@ -100,6 +100,9 @@ function encoder(mtype) {
     }
 
     return gen
+    ("if(m.$unknowns!=null&&Object.hasOwnProperty.call(m,\"$unknowns\"))")
+        ("for(var i=0;i<m.$unknowns.length;++i)")
+            ("w.raw(m.$unknowns[i])")
     ("return w");
     /* eslint-enable no-unexpected-multiline, block-scoped-var, no-redeclare */
 }

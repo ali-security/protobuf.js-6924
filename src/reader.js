@@ -79,27 +79,68 @@ Reader.create = create();
 Reader.prototype._slice = util.Array.prototype.subarray || /* istanbul ignore next */ util.Array.prototype.slice;
 
 /**
+ * Returns raw bytes from the backing buffer without advancing the reader.
+ * @param {number} start Start offset
+ * @param {number} end End offset
+ * @returns {Uint8Array} Raw bytes
+ */
+Reader.prototype.raw = function read_raw(start, end) {
+    if (Array.isArray(this.buf)) // plain array
+        return this.buf.slice(start, end);
+
+    if (start === end) // fix for IE 10/Win8 and others' subarray returning array of size 1
+        return new this.buf.constructor(0);
+    return this._slice.call(this.buf, start, end);
+};
+
+/**
  * Reads a varint as an unsigned 32 bit value.
  * @function
  * @returns {number} Value read
  */
 Reader.prototype.uint32 = (function read_uint32_setup() {
-    var value = 4294967295; // optimizer type-hint, tends to deopt otherwise (?!)
     return function read_uint32() {
-        value = (         this.buf[this.pos] & 127       ) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        value = (value | (this.buf[this.pos] & 127) <<  7) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        value = (value | (this.buf[this.pos] & 127) << 14) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        value = (value | (this.buf[this.pos] & 127) << 21) >>> 0; if (this.buf[this.pos++] < 128) return value;
-        value = (value | (this.buf[this.pos] &  15) << 28) >>> 0; if (this.buf[this.pos++] < 128) return value;
+        var buf = this.buf,
+            pos = this.pos,
+            value = (buf[pos] & 127) >>> 0;
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
+        value = (value | (buf[pos] & 127) << 7) >>> 0;
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
+        value = (value | (buf[pos] & 127) << 14) >>> 0;
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
+        value = (value | (buf[pos] & 127) << 21) >>> 0;
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
+        value = (value | (buf[pos] & 15) << 28) >>> 0;
+        if (buf[pos++] < 128) {
+            this.pos = pos;
+            return value;
+        }
 
         for (var i = 0; i < 5; ++i) {
             /* istanbul ignore if */
-            if (this.pos >= this.len)
+            if (pos >= this.len) {
+                this.pos = pos;
                 throw indexOutOfRange(this);
-            if (this.buf[this.pos++] < 128)
+            }
+            if (buf[pos++] < 128) {
+                this.pos = pos;
                 return value;
+            }
         }
         /* istanbul ignore next */
+        this.pos = pos;
         throw Error("invalid varint encoding");
     };
 })();
@@ -325,17 +366,8 @@ Reader.prototype.bytes = function read_bytes() {
     if (end > this.len)
         throw indexOutOfRange(this, length);
 
-    this.pos += length;
-    if (Array.isArray(this.buf)) // plain array
-        return this.buf.slice(start, end);
-
-    if (start === end) { // fix for IE 10/Win8 and others' subarray returning array of size 1
-        var nativeBuffer = util.Buffer;
-        return nativeBuffer
-            ? nativeBuffer.alloc(0)
-            : new this.buf.constructor(0);
-    }
-    return this._slice.call(this.buf, start, end);
+    this.pos = end;
+    return this.raw(start, end);
 };
 
 /**
@@ -343,8 +375,16 @@ Reader.prototype.bytes = function read_bytes() {
  * @returns {string} Value read
  */
 Reader.prototype.string = function read_string() {
-    var bytes = this.bytes();
-    return utf8.read(bytes, 0, bytes.length);
+    var length = this.uint32(),
+        start  = this.pos,
+        end    = this.pos + length;
+
+    /* istanbul ignore if */
+    if (end > this.len)
+        throw indexOutOfRange(this, length);
+
+    this.pos = end;
+    return utf8.read(this.buf, start, end);
 };
 
 /**

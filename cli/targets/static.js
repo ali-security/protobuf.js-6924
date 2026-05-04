@@ -166,9 +166,13 @@ var shortVars = {
     "w": "writer",
     "m": "message",
     "t": "tag",
+    "t2": "tag2",
+    "u": "wireType",
     "l": "length",
+    "s": "start",
     "c": "end", "c2": "end2",
     "k": "key",
+    "v": "value",
     "ks": "keys", "ks2": "keys2",
     "e": "error",
     "f": "impl",
@@ -232,8 +236,7 @@ var renameVars = {
 };
 
 function buildFunction(type, functionName, gen, scope) {
-    var code = gen.toString(functionName)
-        .replace(/((?!\.)types\[\d+])(\.values)/g, "$1"); // enums: use types[N] instead of reflected types[N].values
+    var code = gen.toString(functionName);
 
     var ast = espree.parse(code);
     /* eslint-disable no-extra-parens */
@@ -260,6 +263,30 @@ function buildFunction(type, functionName, gen, scope) {
                 return {
                     "type": "Identifier",
                     "name": "$root" + type.fullName
+                };
+            // replace types[N].ctor with the field's actual type constructor
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "ctor"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
+                };
+            // replace types[N].values with the field's actual enum object
+            if (
+                node.type === "MemberExpression"
+             && node.object.type === "MemberExpression"
+             && node.object.object.type === "Identifier" && node.object.object.name === "types"
+             && node.object.property.type === "Literal"
+             && node.property.type === "Identifier" && node.property.name === "values"
+            )
+                return {
+                    "type": "Identifier",
+                    "name": "$root" + type.fieldsArray[node.object.property.value].resolvedType.fullName
                 };
             // replace types[N] with the field's actual type
             if (
@@ -433,6 +460,7 @@ function buildType(ref, type) {
             }
             typeDef.push("@property {" + jsType + "} " + toPropName(field, nullable) + " " + (field.comment || type.name + " " + field.name));
         });
+        typeDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
         push("");
         pushComment(typeDef);
     }
@@ -456,6 +484,7 @@ function buildType(ref, type) {
             var propType = optional ? jsType.replace(/\|undefined\b/g, "") : jsType;
             classDef.push("@property {" + propType + "} " + toPropName(field, optional) + " " + (field.comment || type.name + " " + field.name));
         });
+        classDef.push("@property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding");
     }
     pushComment(classDef);
     buildFunction(type, type.name, Type.generateConstructor(type));

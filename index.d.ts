@@ -262,6 +262,15 @@ export class Field extends FieldBase {
     constructor(name: string, id: number, type: string, rule?: (string|{ [k: string]: any }), extend?: (string|{ [k: string]: any }), options?: { [k: string]: any });
 
     /**
+     * Field decorator (TypeScript).
+     * @param fieldId Field id
+     * @param fieldType Field type
+     * @param [fieldRule="optional"] Field rule
+     * @returns Decorator function
+     */
+    public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
+
+    /**
      * Constructs a field from a field descriptor.
      * @param name Field name
      * @param json Field descriptor
@@ -297,15 +306,6 @@ export class Field extends FieldBase {
      * @returns Decorator function
      */
     public static d<T extends number | number[] | Long | Long[] | string | string[] | boolean | boolean[] | Uint8Array | Uint8Array[] | Buffer | Buffer[]>(fieldId: number, fieldType: ("double"|"float"|"int32"|"uint32"|"sint32"|"fixed32"|"sfixed32"|"int64"|"uint64"|"sint64"|"fixed64"|"sfixed64"|"string"|"bool"|"bytes"|object), fieldRule?: ("optional"|"required"|"repeated"), defaultValue?: T): FieldDecorator;
-
-    /**
-     * Field decorator (TypeScript).
-     * @param fieldId Field id
-     * @param fieldType Field type
-     * @param [fieldRule="optional"] Field rule
-     * @returns Decorator function
-     */
-    public static d<T extends Message<T>>(fieldId: number, fieldType: (Constructor<T>|string), fieldRule?: ("optional"|"required"|"repeated")): FieldDecorator;
 }
 
 /** Base class of all reflected message fields. This is not an actual class but here for the sake of having consistent type definitions. */
@@ -539,6 +539,9 @@ export class Message<T extends object = object> {
      */
     constructor(properties?: Properties<T>);
 
+    /** Unknown fields preserved while decoding */
+    public $unknowns?: Uint8Array[];
+
     /** Reference to the reflected type. */
     public static readonly $type: Type;
 
@@ -624,9 +627,9 @@ export class Method extends ReflectionObject {
      * @param [responseStream] Whether the response is streamed
      * @param [options] Declared options
      * @param [comment] The comment for this method
-     * @param [parsedOptions] Declared options, properly parsed into an object
+     * @param [parsedOptions] Declared options, properly parsed into objects
      */
-    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any });
+    constructor(name: string, type: (string|undefined), requestType: string, responseType: string, requestStream?: (boolean|{ [k: string]: any }), responseStream?: (boolean|{ [k: string]: any }), options?: { [k: string]: any }, comment?: string, parsedOptions?: { [k: string]: any }[]);
 
     /** Method type. */
     public type: string;
@@ -652,8 +655,8 @@ export class Method extends ReflectionObject {
     /** Comment for this method */
     public comment: (string|null);
 
-    /** Options properly parsed into an object */
-    public parsedOptions: any;
+    /** Options properly parsed into objects */
+    public parsedOptions?: { [k: string]: any }[];
 
     /**
      * Constructs a method from a method descriptor.
@@ -696,8 +699,8 @@ export interface IMethod {
     /** Method comments */
     comment: string;
 
-    /** Method options properly parsed into an object */
-    parsedOptions?: { [k: string]: any };
+    /** Method options properly parsed into objects */
+    parsedOptions?: { [k: string]: any }[];
 }
 
 /** Reflected namespace. */
@@ -898,7 +901,7 @@ export abstract class ReflectionObject {
     public options?: { [k: string]: any };
 
     /** Parsed Options. */
-    public parsedOptions?: { [k: string]: any[] };
+    public parsedOptions?: { [k: string]: any }[];
 
     /** Unique name within its namespace. */
     public name: string;
@@ -1175,6 +1178,14 @@ export class Reader {
     public static create(buffer: (Uint8Array|Buffer)): (Reader|BufferReader);
 
     /**
+     * Returns raw bytes from the backing buffer without advancing the reader.
+     * @param start Start offset
+     * @param end End offset
+     * @returns Raw bytes
+     */
+    public raw(start: number, end: number): Uint8Array;
+
+    /**
      * Reads a varint as an unsigned 32 bit value.
      * @returns Value read
      */
@@ -1292,6 +1303,14 @@ export class BufferReader extends Reader {
      * @param buffer Buffer to read from
      */
     constructor(buffer: Buffer);
+
+    /**
+     * Returns raw bytes from the backing buffer without advancing the reader.
+     * @param start Start offset
+     * @param end End offset
+     * @returns Raw bytes
+     */
+    public raw(start: number, end: number): Buffer;
 
     /**
      * Reads a sequence of bytes preceeded by its length as a varint.
@@ -2397,8 +2416,9 @@ export namespace util {
      * Makes a property safe for assignment as an own property.
      * @param obj Object
      * @param key Property key
+     * @param [enumerable=true] Whether the property should be enumerable
      */
-    function makeProp(obj: { [k: string]: any }, key: string): void;
+    function makeProp(obj: { [k: string]: any }, key: string, enumerable?: boolean): void;
 
     /**
      * Converts the first character of a string to lower case.
@@ -2776,6 +2796,13 @@ export class Writer {
     public bytes(value: (Uint8Array|string)): Writer;
 
     /**
+     * Writes raw bytes without a tag or length prefix.
+     * @param value Raw bytes
+     * @returns `this`
+     */
+    public raw(value: Uint8Array): Writer;
+
+    /**
      * Writes a string.
      * @param value Value to write
      * @returns `this`
@@ -2820,6 +2847,13 @@ export class BufferWriter extends Writer {
      * @returns Buffer
      */
     public static alloc(size: number): Buffer;
+
+    /**
+     * Writes raw bytes without a tag or length prefix.
+     * @param value Raw bytes
+     * @returns `this`
+     */
+    public raw(value: Uint8Array): BufferWriter;
 
     /**
      * Finishes the write operation.

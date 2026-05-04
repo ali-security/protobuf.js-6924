@@ -68,7 +68,7 @@ tape.test("pbjs generates static code", function(test) {
                     value: 42,
                 },
                 regularField: "abc",
-                enumField: 0,
+                enumField: 1,
             };
             var obj1 = OneofContainer.toObject(OneofContainer.fromObject(obj));
             test.deepEqual(obj, obj1, "fromObject and toObject work for plain object");
@@ -80,9 +80,9 @@ tape.test("pbjs generates static code", function(test) {
             instance.messageInOneof = new Message();
             instance.messageInOneof.value = 42;
             instance.regularField = "abc";
-            instance.enumField = 0;
+            instance.enumField = 1;
             var instance1 = OneofContainerDynamic.toObject(OneofContainerDynamic.fromObject(instance));
-            test.deepEqual(instance, instance1, "fromObject and toObject work for instance of the static type");
+            test.deepEqual(OneofContainer.toObject(instance), instance1, "fromObject and toObject work for instance of the static type");
 
             // Check that getTypeUrl works
             var defaultTypeUrl = Message.getTypeUrl();

@@ -33,6 +33,7 @@ $root.jspb = (function() {
              * Properties of an Empty.
              * @memberof jspb.test
              * @interface IEmpty
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -42,6 +43,7 @@ $root.jspb = (function() {
              * @implements IEmpty
              * @constructor
              * @param {jspb.test.IEmpty=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Empty(properties) {
                 if (properties)
@@ -74,6 +76,9 @@ $root.jspb = (function() {
             Empty.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -110,16 +115,15 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Empty();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
-                    }
+                    reader.skipType(tag & 7, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -241,6 +245,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface IEnumContainer
              * @property {jspb.test.OuterEnum|null} [outerEnum] EnumContainer outerEnum
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -250,6 +255,7 @@ $root.jspb = (function() {
              * @implements IEnumContainer
              * @constructor
              * @param {jspb.test.IEnumContainer=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function EnumContainer(properties) {
                 if (properties)
@@ -292,6 +298,9 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 if (message.outerEnum != null && Object.hasOwnProperty.call(message, "outerEnum"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.outerEnum);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -328,20 +337,24 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.EnumContainer();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.outerEnum = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -483,6 +496,7 @@ $root.jspb = (function() {
              * @property {string} aString Simple1 aString
              * @property {Array.<string>|null} [aRepeatedString] Simple1 aRepeatedString
              * @property {boolean|null} [aBoolean] Simple1 aBoolean
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -492,6 +506,7 @@ $root.jspb = (function() {
              * @implements ISimple1
              * @constructor
              * @param {jspb.test.ISimple1=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Simple1(properties) {
                 this.aRepeatedString = [];
@@ -555,6 +570,9 @@ $root.jspb = (function() {
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
                 if (message.aBoolean != null && Object.hasOwnProperty.call(message, "aBoolean"))
                     writer.uint32(/* id 3, wireType 0 =*/24).bool(message.aBoolean);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -591,30 +609,38 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Simple1();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.aBoolean = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -767,6 +793,7 @@ $root.jspb = (function() {
              * @interface ISimple2
              * @property {string} aString Simple2 aString
              * @property {Array.<string>|null} [aRepeatedString] Simple2 aRepeatedString
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -776,6 +803,7 @@ $root.jspb = (function() {
              * @implements ISimple2
              * @constructor
              * @param {jspb.test.ISimple2=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Simple2(properties) {
                 this.aRepeatedString = [];
@@ -829,6 +857,9 @@ $root.jspb = (function() {
                 if (message.aRepeatedString != null && message.aRepeatedString.length)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.aRepeatedString[i]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -865,26 +896,32 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Simple2();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1030,6 +1067,7 @@ $root.jspb = (function() {
              * @property {string} "default" SpecialCases default
              * @property {string} "function" SpecialCases function
              * @property {string} "var" SpecialCases var
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -1039,6 +1077,7 @@ $root.jspb = (function() {
              * @implements ISpecialCases
              * @constructor
              * @param {jspb.test.ISpecialCases=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function SpecialCases(properties) {
                 if (properties)
@@ -1107,6 +1146,9 @@ $root.jspb = (function() {
                 writer.uint32(/* id 2, wireType 2 =*/18).string(message["default"]);
                 writer.uint32(/* id 3, wireType 2 =*/26).string(message["function"]);
                 writer.uint32(/* id 4, wireType 2 =*/34).string(message["var"]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -1143,32 +1185,42 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.SpecialCases();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.normal = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message["default"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message["function"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message["var"] = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1322,6 +1374,7 @@ $root.jspb = (function() {
              * @property {jspb.test.OptionalFields.INested|null} [aNestedMessage] OptionalFields aNestedMessage
              * @property {Array.<jspb.test.OptionalFields.INested>|null} [aRepeatedMessage] OptionalFields aRepeatedMessage
              * @property {Array.<string>|null} [aRepeatedString] OptionalFields aRepeatedString
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -1331,6 +1384,7 @@ $root.jspb = (function() {
              * @implements IOptionalFields
              * @constructor
              * @param {jspb.test.IOptionalFields=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function OptionalFields(properties) {
                 this.aRepeatedMessage = [];
@@ -1416,6 +1470,9 @@ $root.jspb = (function() {
                 if (message.aRepeatedString != null && message.aRepeatedString.length)
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 5, wireType 2 =*/42).string(message.aRepeatedString[i]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -1452,40 +1509,52 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OptionalFields();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.aBool = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.aNestedMessage = $root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.aNestedMessage);
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.OptionalFields.Nested.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -1673,6 +1742,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.OptionalFields
                  * @interface INested
                  * @property {number|null} [anInt] Nested anInt
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -1682,6 +1752,7 @@ $root.jspb = (function() {
                  * @implements INested
                  * @constructor
                  * @param {jspb.test.OptionalFields.INested=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Nested(properties) {
                     if (properties)
@@ -1724,6 +1795,9 @@ $root.jspb = (function() {
                         writer = $Writer.create();
                     if (message.anInt != null && Object.hasOwnProperty.call(message, "anInt"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.anInt);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -1760,20 +1834,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OptionalFields.Nested();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.anInt = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -1905,6 +1983,7 @@ $root.jspb = (function() {
              * @property {Array.<string>|null} [".jspb.test.IndirectExtension.repeatedStr"] HasExtensions .jspb.test.IndirectExtension.repeatedStr
              * @property {Array.<jspb.test.ISimple1>|null} [".jspb.test.IndirectExtension.repeatedSimple"] HasExtensions .jspb.test.IndirectExtension.repeatedSimple
              * @property {jspb.test.ISimple1|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -1920,6 +1999,7 @@ $root.jspb = (function() {
              * @property {Array.<string>} ".jspb.test.IndirectExtension.repeatedStr" HasExtensions .jspb.test.IndirectExtension.repeatedStr
              * @property {Array.<jspb.test.ISimple1>} ".jspb.test.IndirectExtension.repeatedSimple" HasExtensions .jspb.test.IndirectExtension.repeatedSimple
              * @property {jspb.test.ISimple1|null} [".jspb.test.simple1"] HasExtensions .jspb.test.simple1
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function HasExtensions(properties) {
                 this[".jspb.test.IndirectExtension.repeatedStr"] = [];
@@ -2005,6 +2085,9 @@ $root.jspb = (function() {
                         $root.jspb.test.Simple1.encode(message[".jspb.test.IndirectExtension.repeatedSimple"][i], writer.uint32(/* id 104, wireType 2 =*/834).fork()).ldelim();
                 if (message[".jspb.test.simple1"] != null && Object.hasOwnProperty.call(message, ".jspb.test.simple1"))
                     $root.jspb.test.Simple1.encode(message[".jspb.test.simple1"], writer.uint32(/* id 105, wireType 2 =*/842).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -2041,56 +2124,76 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.HasExtensions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.str1 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.str2 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.str3 = reader.string();
-                            break;
+                            continue;
                         }
-                    case 802: {
+                    case 100: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IsExtension.extField"] = $root.jspb.test.IsExtension.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.IsExtension.extField"]);
-                            break;
+                            continue;
                         }
-                    case 810: {
+                    case 101: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IndirectExtension.simple"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.IndirectExtension.simple"]);
-                            break;
+                            continue;
                         }
-                    case 818: {
+                    case 102: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IndirectExtension.str"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 826: {
+                    case 103: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message[".jspb.test.IndirectExtension.repeatedStr"] && message[".jspb.test.IndirectExtension.repeatedStr"].length))
                                 message[".jspb.test.IndirectExtension.repeatedStr"] = [];
                             message[".jspb.test.IndirectExtension.repeatedStr"].push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 834: {
+                    case 104: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message[".jspb.test.IndirectExtension.repeatedSimple"] && message[".jspb.test.IndirectExtension.repeatedSimple"].length))
                                 message[".jspb.test.IndirectExtension.repeatedSimple"] = [];
                             message[".jspb.test.IndirectExtension.repeatedSimple"].push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 842: {
+                    case 105: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.simple1"] = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.simple1"]);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -2326,6 +2429,7 @@ $root.jspb = (function() {
              * @property {jspb.test.Complex.INested|null} [aNestedMessage] Complex aNestedMessage
              * @property {Array.<jspb.test.Complex.INested>|null} [aRepeatedMessage] Complex aRepeatedMessage
              * @property {Array.<string>|null} [aRepeatedString] Complex aRepeatedString
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -2335,6 +2439,7 @@ $root.jspb = (function() {
              * @implements IComplex
              * @constructor
              * @param {jspb.test.IComplex=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Complex(properties) {
                 this.aRepeatedMessage = [];
@@ -2419,6 +2524,9 @@ $root.jspb = (function() {
                     for (var i = 0; i < message.aRepeatedString.length; ++i)
                         writer.uint32(/* id 7, wireType 2 =*/58).string(message.aRepeatedString[i]);
                 writer.uint32(/* id 9, wireType 0 =*/72).bool(message.anOutOfOrderBool);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -2455,40 +2563,52 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Complex();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.aString = reader.string();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.anOutOfOrderBool = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.aNestedMessage = $root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, _depth + 1, message.aNestedMessage);
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedMessage && message.aRepeatedMessage.length))
                                 message.aRepeatedMessage = [];
                             message.aRepeatedMessage.push($root.jspb.test.Complex.Nested.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.aRepeatedString && message.aRepeatedString.length))
                                 message.aRepeatedString = [];
                             message.aRepeatedString.push(reader.string());
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -2677,6 +2797,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.Complex
                  * @interface INested
                  * @property {number} anInt Nested anInt
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -2686,6 +2807,7 @@ $root.jspb = (function() {
                  * @implements INested
                  * @constructor
                  * @param {jspb.test.Complex.INested=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Nested(properties) {
                     if (properties)
@@ -2727,6 +2849,9 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 2, wireType 0 =*/16).int32(message.anInt);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -2763,20 +2888,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Complex.Nested();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 16: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.anInt = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -2900,6 +3029,7 @@ $root.jspb = (function() {
              * Properties of an OuterMessage.
              * @memberof jspb.test
              * @interface IOuterMessage
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -2909,6 +3039,7 @@ $root.jspb = (function() {
              * @implements IOuterMessage
              * @constructor
              * @param {jspb.test.IOuterMessage=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function OuterMessage(properties) {
                 if (properties)
@@ -2941,6 +3072,9 @@ $root.jspb = (function() {
             OuterMessage.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -2977,16 +3111,15 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OuterMessage();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
-                    }
+                    reader.skipType(tag & 7, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3091,6 +3224,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.OuterMessage
                  * @interface IComplex
                  * @property {number|null} [innerComplexField] Complex innerComplexField
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -3100,6 +3234,7 @@ $root.jspb = (function() {
                  * @implements IComplex
                  * @constructor
                  * @param {jspb.test.OuterMessage.IComplex=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Complex(properties) {
                     if (properties)
@@ -3142,6 +3277,9 @@ $root.jspb = (function() {
                         writer = $Writer.create();
                     if (message.innerComplexField != null && Object.hasOwnProperty.call(message, "innerComplexField"))
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.innerComplexField);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -3178,20 +3316,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.OuterMessage.Complex();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.innerComplexField = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -3315,6 +3457,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface IIsExtension
              * @property {string|null} [ext1] IsExtension ext1
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -3324,6 +3467,7 @@ $root.jspb = (function() {
              * @implements IIsExtension
              * @constructor
              * @param {jspb.test.IIsExtension=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function IsExtension(properties) {
                 if (properties)
@@ -3366,6 +3510,9 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 if (message.ext1 != null && Object.hasOwnProperty.call(message, "ext1"))
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.ext1);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -3402,20 +3549,24 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.IsExtension();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.ext1 = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3535,6 +3686,7 @@ $root.jspb = (function() {
              * Properties of an IndirectExtension.
              * @memberof jspb.test
              * @interface IIndirectExtension
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -3544,6 +3696,7 @@ $root.jspb = (function() {
              * @implements IIndirectExtension
              * @constructor
              * @param {jspb.test.IIndirectExtension=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function IndirectExtension(properties) {
                 if (properties)
@@ -3576,6 +3729,9 @@ $root.jspb = (function() {
             IndirectExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -3612,16 +3768,15 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.IndirectExtension();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
-                    }
+                    reader.skipType(tag & 7, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -3734,6 +3889,7 @@ $root.jspb = (function() {
              * @property {jspb.test.DefaultValues.Enum|null} [enumField] DefaultValues enumField
              * @property {string|null} [emptyField] DefaultValues emptyField
              * @property {Uint8Array|null} [bytesField] DefaultValues bytesField
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -3743,6 +3899,7 @@ $root.jspb = (function() {
              * @implements IDefaultValues
              * @constructor
              * @param {jspb.test.IDefaultValues=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function DefaultValues(properties) {
                 if (properties)
@@ -3835,6 +3992,9 @@ $root.jspb = (function() {
                     writer.uint32(/* id 6, wireType 2 =*/50).string(message.emptyField);
                 if (message.bytesField != null && Object.hasOwnProperty.call(message, "bytesField"))
                     writer.uint32(/* id 8, wireType 2 =*/66).bytes(message.bytesField);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -3871,40 +4031,54 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.DefaultValues();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.stringField = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.boolField = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.intField = reader.int64();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.enumField = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.emptyField = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.bytesField = reader.bytes();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -4133,6 +4307,7 @@ $root.jspb = (function() {
              * @property {number} requiredDoubleField FloatingPointFields requiredDoubleField
              * @property {Array.<number>|null} [repeatedDoubleField] FloatingPointFields repeatedDoubleField
              * @property {number|null} [defaultDoubleField] FloatingPointFields defaultDoubleField
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -4142,6 +4317,7 @@ $root.jspb = (function() {
              * @implements IFloatingPointFields
              * @constructor
              * @param {jspb.test.IFloatingPointFields=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FloatingPointFields(properties) {
                 this.repeatedFloatField = [];
@@ -4256,6 +4432,9 @@ $root.jspb = (function() {
                         writer.uint32(/* id 7, wireType 1 =*/57).double(message.repeatedDoubleField[i]);
                 if (message.defaultDoubleField != null && Object.hasOwnProperty.call(message, "defaultDoubleField"))
                     writer.uint32(/* id 8, wireType 1 =*/65).double(message.defaultDoubleField);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -4292,64 +4471,86 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.FloatingPointFields();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 13: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 5)
+                                break;
                             message.optionalFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 21: {
+                    case 2: {
+                            if (wireType !== 5)
+                                break;
                             message.requiredFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 29:
-                    case 26: {
-                            if (!(message.repeatedFloatField && message.repeatedFloatField.length))
-                                message.repeatedFloatField = [];
-                            if ((tag & 7) === 2) {
+                    case 3: {
+                            if (wireType === 2) {
+                                if (!(message.repeatedFloatField && message.repeatedFloatField.length))
+                                    message.repeatedFloatField = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.repeatedFloatField.push(reader.float());
-                            } else
-                                message.repeatedFloatField.push(reader.float());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 5)
+                                break;
+                            if (!(message.repeatedFloatField && message.repeatedFloatField.length))
+                                message.repeatedFloatField = [];
+                            message.repeatedFloatField.push(reader.float());
+                            continue;
                         }
-                    case 37: {
+                    case 4: {
+                            if (wireType !== 5)
+                                break;
                             message.defaultFloatField = reader.float();
-                            break;
+                            continue;
                         }
-                    case 41: {
+                    case 5: {
+                            if (wireType !== 1)
+                                break;
                             message.optionalDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    case 49: {
+                    case 6: {
+                            if (wireType !== 1)
+                                break;
                             message.requiredDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    case 57:
-                    case 58: {
-                            if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
-                                message.repeatedDoubleField = [];
-                            if ((tag & 7) === 2) {
+                    case 7: {
+                            if (wireType === 2) {
+                                if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
+                                    message.repeatedDoubleField = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.repeatedDoubleField.push(reader.double());
-                            } else
-                                message.repeatedDoubleField.push(reader.double());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 1)
+                                break;
+                            if (!(message.repeatedDoubleField && message.repeatedDoubleField.length))
+                                message.repeatedDoubleField = [];
+                            message.repeatedDoubleField.push(reader.double());
+                            continue;
                         }
-                    case 65: {
+                    case 8: {
+                            if (wireType !== 1)
+                                break;
                             message.defaultDoubleField = reader.double();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -4560,6 +4761,7 @@ $root.jspb = (function() {
              * @property {Uint8Array|null} [bytesField] TestClone bytesField
              * @property {string|null} [unused] TestClone unused
              * @property {jspb.test.ICloneExtension|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -4570,6 +4772,7 @@ $root.jspb = (function() {
              * @constructor
              * @param {jspb.test.ITestClone=} [properties] Properties to set
              * @property {jspb.test.ICloneExtension|null} [".jspb.test.CloneExtension.extField"] TestClone .jspb.test.CloneExtension.extField
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestClone(properties) {
                 this.simple2 = [];
@@ -4658,6 +4861,9 @@ $root.jspb = (function() {
                     writer.uint32(/* id 7, wireType 2 =*/58).string(message.unused);
                 if (message[".jspb.test.CloneExtension.extField"] != null && Object.hasOwnProperty.call(message, ".jspb.test.CloneExtension.extField"))
                     $root.jspb.test.CloneExtension.encode(message[".jspb.test.CloneExtension.extField"], writer.uint32(/* id 100, wireType 2 =*/802).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -4694,42 +4900,56 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestClone();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.str = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.simple1 = $root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1, message.simple1);
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.simple2 && message.simple2.length))
                                 message.simple2 = [];
                             message.simple2.push($root.jspb.test.Simple1.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.bytesField = reader.bytes();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.unused = reader.string();
-                            break;
+                            continue;
                         }
-                    case 802: {
+                    case 100: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.CloneExtension.extField"] = $root.jspb.test.CloneExtension.decode(reader, reader.uint32(), undefined, _depth + 1, message[".jspb.test.CloneExtension.extField"]);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -4928,6 +5148,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface ICloneExtension
              * @property {string|null} [ext] CloneExtension ext
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -4937,6 +5158,7 @@ $root.jspb = (function() {
              * @implements ICloneExtension
              * @constructor
              * @param {jspb.test.ICloneExtension=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function CloneExtension(properties) {
                 if (properties)
@@ -4979,6 +5201,9 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 if (message.ext != null && Object.hasOwnProperty.call(message, "ext"))
                     writer.uint32(/* id 2, wireType 2 =*/18).string(message.ext);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -5015,20 +5240,24 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.CloneExtension();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 18: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.ext = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -5156,6 +5385,7 @@ $root.jspb = (function() {
              * @property {string|null} [id] TestGroup id
              * @property {jspb.test.ISimple2} requiredSimple TestGroup requiredSimple
              * @property {jspb.test.ISimple2|null} [optionalSimple] TestGroup optionalSimple
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -5165,6 +5395,7 @@ $root.jspb = (function() {
              * @implements ITestGroup
              * @constructor
              * @param {jspb.test.ITestGroup=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestGroup(properties) {
                 this.repeatedGroup = [];
@@ -5277,6 +5508,9 @@ $root.jspb = (function() {
                 $root.jspb.test.Simple2.encode(message.requiredSimple, writer.uint32(/* id 7, wireType 2 =*/58).fork()).ldelim();
                 if (message.optionalSimple != null && Object.hasOwnProperty.call(message, "optionalSimple"))
                     $root.jspb.test.Simple2.encode(message.optionalSimple, writer.uint32(/* id 8, wireType 2 =*/66).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -5313,50 +5547,68 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 11: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 3)
+                                break;
                             if (!(message.repeatedGroup && message.repeatedGroup.length))
                                 message.repeatedGroup = [];
                             message.repeatedGroup.push($root.jspb.test.TestGroup.RepeatedGroup.decode(reader, undefined, 12, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 19: {
+                    case 2: {
+                            if (wireType !== 3)
+                                break;
                             message.requiredGroup = $root.jspb.test.TestGroup.RequiredGroup.decode(reader, undefined, 20, _depth + 1, message.requiredGroup);
-                            break;
+                            continue;
                         }
-                    case 27: {
+                    case 3: {
+                            if (wireType !== 3)
+                                break;
                             message.optionalGroup = $root.jspb.test.TestGroup.OptionalGroup.decode(reader, undefined, 28, _depth + 1, message.optionalGroup);
-                            break;
+                            continue;
                         }
-                    case 35: {
+                    case 4: {
+                            if (wireType !== 3)
+                                break;
                             message.messageInGroup = $root.jspb.test.TestGroup.MessageInGroup.decode(reader, undefined, 36, _depth + 1, message.messageInGroup);
-                            break;
+                            continue;
                         }
-                    case 43: {
+                    case 5: {
+                            if (wireType !== 3)
+                                break;
                             message.enumInGroup = $root.jspb.test.TestGroup.EnumInGroup.decode(reader, undefined, 44, _depth + 1, message.enumInGroup);
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.id = reader.string();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.requiredSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, _depth + 1, message.requiredSimple);
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.optionalSimple = $root.jspb.test.Simple2.decode(reader, reader.uint32(), undefined, _depth + 1, message.optionalSimple);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -5584,6 +5836,7 @@ $root.jspb = (function() {
                  * @interface IRepeatedGroup
                  * @property {string} id RepeatedGroup id
                  * @property {Array.<boolean>|null} [someBool] RepeatedGroup someBool
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -5593,6 +5846,7 @@ $root.jspb = (function() {
                  * @implements IRepeatedGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRepeatedGroup=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function RepeatedGroup(properties) {
                     this.someBool = [];
@@ -5646,6 +5900,9 @@ $root.jspb = (function() {
                     if (message.someBool != null && message.someBool.length)
                         for (var i = 0; i < message.someBool.length; ++i)
                             writer.uint32(/* id 2, wireType 0 =*/16).bool(message.someBool[i]);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -5682,32 +5939,40 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.RepeatedGroup();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        case 16:
-                        case 18: {
-                                if (!(message.someBool && message.someBool.length))
-                                    message.someBool = [];
-                                if ((tag & 7) === 2) {
+                        case 2: {
+                                if (wireType === 2) {
+                                    if (!(message.someBool && message.someBool.length))
+                                        message.someBool = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.someBool.push(reader.bool());
-                                } else
-                                    message.someBool.push(reader.bool());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.someBool && message.someBool.length))
+                                    message.someBool = [];
+                                message.someBool.push(reader.bool());
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -5850,6 +6115,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.TestGroup
                  * @interface IRequiredGroup
                  * @property {string} id RequiredGroup id
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -5859,6 +6125,7 @@ $root.jspb = (function() {
                  * @implements IRequiredGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IRequiredGroup=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function RequiredGroup(properties) {
                     if (properties)
@@ -5900,6 +6167,9 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -5936,20 +6206,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.RequiredGroup();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6071,6 +6345,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.TestGroup
                  * @interface IOptionalGroup
                  * @property {string} id OptionalGroup id
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -6080,6 +6355,7 @@ $root.jspb = (function() {
                  * @implements IOptionalGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IOptionalGroup=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function OptionalGroup(properties) {
                     if (properties)
@@ -6121,6 +6397,9 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -6157,20 +6436,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.OptionalGroup();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6292,6 +6575,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.TestGroup
                  * @interface IMessageInGroup
                  * @property {jspb.test.TestGroup.MessageInGroup.INestedMessage} id MessageInGroup id
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -6301,6 +6585,7 @@ $root.jspb = (function() {
                  * @implements IMessageInGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IMessageInGroup=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function MessageInGroup(properties) {
                     if (properties)
@@ -6342,6 +6627,9 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.encode(message.id, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -6378,20 +6666,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.MessageInGroup();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.id = $root.jspb.test.TestGroup.MessageInGroup.NestedMessage.decode(reader, reader.uint32(), undefined, _depth + 1, message.id);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6516,6 +6808,7 @@ $root.jspb = (function() {
                      * @memberof jspb.test.TestGroup.MessageInGroup
                      * @interface INestedMessage
                      * @property {string|null} [id] NestedMessage id
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                      */
 
                     /**
@@ -6525,6 +6818,7 @@ $root.jspb = (function() {
                      * @implements INestedMessage
                      * @constructor
                      * @param {jspb.test.TestGroup.MessageInGroup.INestedMessage=} [properties] Properties to set
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                      */
                     function NestedMessage(properties) {
                         if (properties)
@@ -6567,6 +6861,9 @@ $root.jspb = (function() {
                             writer = $Writer.create();
                         if (message.id != null && Object.hasOwnProperty.call(message, "id"))
                             writer.uint32(/* id 1, wireType 2 =*/10).string(message.id);
+                        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                            for (var i = 0; i < message.$unknowns.length; ++i)
+                                writer.raw(message.$unknowns[i]);
                         return writer;
                     };
 
@@ -6603,20 +6900,24 @@ $root.jspb = (function() {
                             throw Error("max depth exceeded");
                         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.MessageInGroup.NestedMessage();
                         while (reader.pos < end) {
+                            var start = reader.pos;
                             var tag = reader.uint32();
                             if (tag === _end) {
                                 _end = undefined;
                                 break;
                             }
-                            switch (tag) {
-                            case 10: {
+                            var wireType = tag & 7;
+                            switch (tag >>>= 3) {
+                            case 1: {
+                                    if (wireType !== 2)
+                                        break;
                                     message.id = reader.string();
-                                    break;
+                                    continue;
                                 }
-                            default:
-                                reader.skipType(tag & 7, _depth, tag >>> 3);
-                                break;
                             }
+                            reader.skipType(wireType, _depth, tag);
+                            $util.makeProp(message, "$unknowns", false);
+                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         }
                         if (_end !== undefined)
                             throw Error("missing end group");
@@ -6740,6 +7041,7 @@ $root.jspb = (function() {
                  * @memberof jspb.test.TestGroup
                  * @interface IEnumInGroup
                  * @property {jspb.test.TestGroup.EnumInGroup.NestedEnum} id EnumInGroup id
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -6749,6 +7051,7 @@ $root.jspb = (function() {
                  * @implements IEnumInGroup
                  * @constructor
                  * @param {jspb.test.TestGroup.IEnumInGroup=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function EnumInGroup(properties) {
                     if (properties)
@@ -6790,6 +7093,9 @@ $root.jspb = (function() {
                     if (!writer)
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.id);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -6826,20 +7132,24 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup.EnumInGroup();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.id = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -6997,6 +7307,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface ITestGroup1
              * @property {jspb.test.TestGroup.IRepeatedGroup|null} [group] TestGroup1 group
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -7006,6 +7317,7 @@ $root.jspb = (function() {
              * @implements ITestGroup1
              * @constructor
              * @param {jspb.test.ITestGroup1=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestGroup1(properties) {
                 if (properties)
@@ -7048,6 +7360,9 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 if (message.group != null && Object.hasOwnProperty.call(message, "group"))
                     $root.jspb.test.TestGroup.RepeatedGroup.encode(message.group, writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -7084,20 +7399,24 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestGroup1();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.group = $root.jspb.test.TestGroup.RepeatedGroup.decode(reader, reader.uint32(), undefined, _depth + 1, message.group);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -7224,6 +7543,7 @@ $root.jspb = (function() {
              * @interface ITestReservedNames
              * @property {number|null} [extension] TestReservedNames extension
              * @property {number|null} [".jspb.test.TestReservedNamesExtension.foo"] TestReservedNames .jspb.test.TestReservedNamesExtension.foo
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -7234,6 +7554,7 @@ $root.jspb = (function() {
              * @constructor
              * @param {jspb.test.ITestReservedNames=} [properties] Properties to set
              * @property {number} ".jspb.test.TestReservedNamesExtension.foo" TestReservedNames .jspb.test.TestReservedNamesExtension.foo
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestReservedNames(properties) {
                 if (properties)
@@ -7280,6 +7601,9 @@ $root.jspb = (function() {
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.extension);
                 if (message[".jspb.test.TestReservedNamesExtension.foo"] != null && Object.hasOwnProperty.call(message, ".jspb.test.TestReservedNamesExtension.foo"))
                     writer.uint32(/* id 10, wireType 0 =*/80).int32(message[".jspb.test.TestReservedNamesExtension.foo"]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -7316,24 +7640,30 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestReservedNames();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.extension = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message[".jspb.test.TestReservedNamesExtension.foo"] = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -7462,6 +7792,7 @@ $root.jspb = (function() {
              * Properties of a TestReservedNamesExtension.
              * @memberof jspb.test
              * @interface ITestReservedNamesExtension
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -7471,6 +7802,7 @@ $root.jspb = (function() {
              * @implements ITestReservedNamesExtension
              * @constructor
              * @param {jspb.test.ITestReservedNamesExtension=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestReservedNamesExtension(properties) {
                 if (properties)
@@ -7503,6 +7835,9 @@ $root.jspb = (function() {
             TestReservedNamesExtension.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -7539,16 +7874,15 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestReservedNamesExtension();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
-                    }
+                    reader.skipType(tag & 7, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -7665,6 +7999,7 @@ $root.jspb = (function() {
              * @property {number|null} [atwo] TestMessageWithOneof atwo
              * @property {number|null} [bone] TestMessageWithOneof bone
              * @property {number|null} [btwo] TestMessageWithOneof btwo
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -7674,6 +8009,7 @@ $root.jspb = (function() {
              * @implements ITestMessageWithOneof
              * @constructor
              * @param {jspb.test.ITestMessageWithOneof=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestMessageWithOneof(properties) {
                 this.repeatedField = [];
@@ -7855,6 +8191,9 @@ $root.jspb = (function() {
                     writer.uint32(/* id 12, wireType 0 =*/96).int32(message.bone);
                 if (message.btwo != null && Object.hasOwnProperty.call(message, "btwo"))
                     writer.uint32(/* id 13, wireType 0 =*/104).int32(message.btwo);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -7891,66 +8230,88 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestMessageWithOneof();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 26: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.pone = reader.string();
                             message.partialOneof = "pone";
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             message.pthree = reader.string();
                             message.partialOneof = "pthree";
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.rone = $root.jspb.test.TestMessageWithOneof.decode(reader, reader.uint32(), undefined, _depth + 1, message.rone);
                             message.recursiveOneof = "rone";
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.rtwo = reader.string();
                             message.recursiveOneof = "rtwo";
-                            break;
+                            continue;
                         }
-                    case 64: {
+                    case 8: {
+                            if (wireType !== 0)
+                                break;
                             message.normalField = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.repeatedField && message.repeatedField.length))
                                 message.repeatedField = [];
                             message.repeatedField.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message.aone = reader.int32();
                             message.defaultOneofA = "aone";
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.atwo = reader.int32();
                             message.defaultOneofA = "atwo";
-                            break;
+                            continue;
                         }
-                    case 96: {
+                    case 12: {
+                            if (wireType !== 0)
+                                break;
                             message.bone = reader.int32();
                             message.defaultOneofB = "bone";
-                            break;
+                            continue;
                         }
-                    case 104: {
+                    case 13: {
+                            if (wireType !== 0)
+                                break;
                             message.btwo = reader.int32();
                             message.defaultOneofB = "btwo";
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -8204,6 +8565,7 @@ $root.jspb = (function() {
              * @interface ITestEndsWithBytes
              * @property {number|null} [value] TestEndsWithBytes value
              * @property {Uint8Array|null} [data] TestEndsWithBytes data
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -8213,6 +8575,7 @@ $root.jspb = (function() {
              * @implements ITestEndsWithBytes
              * @constructor
              * @param {jspb.test.ITestEndsWithBytes=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestEndsWithBytes(properties) {
                 if (properties)
@@ -8265,6 +8628,9 @@ $root.jspb = (function() {
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.value);
                 if (message.data != null && Object.hasOwnProperty.call(message, "data"))
                     writer.uint32(/* id 2, wireType 2 =*/18).bytes(message.data);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -8301,24 +8667,30 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestEndsWithBytes();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.value = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.data = reader.bytes();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -8468,6 +8840,7 @@ $root.jspb = (function() {
              * @property {Object.<string,string>|null} [mapBoolString] TestMapFieldsNoBinary mapBoolString
              * @property {jspb.test.ITestMapFieldsNoBinary|null} [testMapFields] TestMapFieldsNoBinary testMapFields
              * @property {Object.<string,jspb.test.ITestMapFieldsNoBinary>|null} [mapStringTestmapfields] TestMapFieldsNoBinary mapStringTestmapfields
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -8477,6 +8850,7 @@ $root.jspb = (function() {
              * @implements ITestMapFieldsNoBinary
              * @constructor
              * @param {jspb.test.ITestMapFieldsNoBinary=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function TestMapFieldsNoBinary(properties) {
                 this.mapStringString = {};
@@ -8655,6 +9029,9 @@ $root.jspb = (function() {
                         writer.uint32(/* id 12, wireType 2 =*/98).fork().uint32(/* id 1, wireType 2 =*/10).string(keys[i]);
                         $root.jspb.test.TestMapFieldsNoBinary.encode(message.mapStringTestmapfields[keys[i]], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim().ldelim();
                     }
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -8691,13 +9068,17 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.TestMapFieldsNoBinary(), key, value;
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringString === $util.emptyObject)
                                 message.mapStringString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8705,24 +9086,29 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringString, key);
                             message.mapStringString[key] = value;
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringInt32 === $util.emptyObject)
                                 message.mapStringInt32 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8730,24 +9116,29 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int32();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt32, key);
                             message.mapStringInt32[key] = value;
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringInt64 === $util.emptyObject)
                                 message.mapStringInt64 = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8755,24 +9146,29 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int64();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringInt64, key);
                             message.mapStringInt64[key] = value;
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringBool === $util.emptyObject)
                                 message.mapStringBool = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8780,24 +9176,29 @@ $root.jspb = (function() {
                             value = false;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.bool();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringBool, key);
                             message.mapStringBool[key] = value;
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringDouble === $util.emptyObject)
                                 message.mapStringDouble = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8805,24 +9206,29 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 17:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 1)
+                                        break;
                                     value = reader.double();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringDouble, key);
                             message.mapStringDouble[key] = value;
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringEnum === $util.emptyObject)
                                 message.mapStringEnum = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8830,24 +9236,29 @@ $root.jspb = (function() {
                             value = 0;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 16:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 0)
+                                        break;
                                     value = reader.int32();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringEnum, key);
                             message.mapStringEnum[key] = value;
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringMsg === $util.emptyObject)
                                 message.mapStringMsg = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8855,24 +9266,29 @@ $root.jspb = (function() {
                             value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = $root.jspb.test.MapValueMessageNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1);
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringMsg, key);
-                            message.mapStringMsg[key] = value;
-                            break;
+                            message.mapStringMsg[key] = value || new $root.jspb.test.MapValueMessageNoBinary();
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapInt32String === $util.emptyObject)
                                 message.mapInt32String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8880,22 +9296,27 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.int32();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapInt32String[key] = value;
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapInt64String === $util.emptyObject)
                                 message.mapInt64String = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8903,22 +9324,27 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.int64();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapInt64String[typeof key === "object" ? $util.longToHash(key) : key] = value;
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapBoolString === $util.emptyObject)
                                 message.mapBoolString = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8926,26 +9352,33 @@ $root.jspb = (function() {
                             value = "";
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 8:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 0)
+                                        break;
                                     key = reader.bool();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = reader.string();
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             message.mapBoolString[key] = value;
-                            break;
+                            continue;
                         }
-                    case 90: {
+                    case 11: {
+                            if (wireType !== 2)
+                                break;
                             message.testMapFields = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1, message.testMapFields);
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             if (message.mapStringTestmapfields === $util.emptyObject)
                                 message.mapStringTestmapfields = {};
                             var end2 = reader.uint32() + reader.pos;
@@ -8953,27 +9386,30 @@ $root.jspb = (function() {
                             value = null;
                             while (reader.pos < end2) {
                                 var tag2 = reader.uint32();
-                                switch (tag2) {
-                                case 10:
+                                wireType = tag2 & 7;
+                                switch (tag2 >>>= 3) {
+                                case 1:
+                                    if (wireType !== 2)
+                                        break;
                                     key = reader.string();
-                                    break;
-                                case 18:
+                                    continue;
+                                case 2:
+                                    if (wireType !== 2)
+                                        break;
                                     value = $root.jspb.test.TestMapFieldsNoBinary.decode(reader, reader.uint32(), undefined, _depth + 1);
-                                    break;
-                                default:
-                                    reader.skipType(tag2 & 7, _depth, tag2 >>> 3);
-                                    break;
+                                    continue;
                                 }
+                                reader.skipType(wireType, _depth, tag2);
                             }
                             if (key === "__proto__")
                                 $util.makeProp(message.mapStringTestmapfields, key);
-                            message.mapStringTestmapfields[key] = value;
-                            break;
+                            message.mapStringTestmapfields[key] = value || new $root.jspb.test.TestMapFieldsNoBinary();
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -9468,6 +9904,7 @@ $root.jspb = (function() {
              * @memberof jspb.test
              * @interface IMapValueMessageNoBinary
              * @property {number|null} [foo] MapValueMessageNoBinary foo
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -9477,6 +9914,7 @@ $root.jspb = (function() {
              * @implements IMapValueMessageNoBinary
              * @constructor
              * @param {jspb.test.IMapValueMessageNoBinary=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function MapValueMessageNoBinary(properties) {
                 if (properties)
@@ -9519,6 +9957,9 @@ $root.jspb = (function() {
                     writer = $Writer.create();
                 if (message.foo != null && Object.hasOwnProperty.call(message, "foo"))
                     writer.uint32(/* id 1, wireType 0 =*/8).int32(message.foo);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -9555,20 +9996,24 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.MapValueMessageNoBinary();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.foo = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -9688,6 +10133,7 @@ $root.jspb = (function() {
              * Properties of a Deeply.
              * @memberof jspb.test
              * @interface IDeeply
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -9697,6 +10143,7 @@ $root.jspb = (function() {
              * @implements IDeeply
              * @constructor
              * @param {jspb.test.IDeeply=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function Deeply(properties) {
                 if (properties)
@@ -9729,6 +10176,9 @@ $root.jspb = (function() {
             Deeply.encode = function encode(message, writer) {
                 if (!writer)
                     writer = $Writer.create();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -9765,16 +10215,15 @@ $root.jspb = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
-                    }
+                    reader.skipType(tag & 7, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -9878,6 +10327,7 @@ $root.jspb = (function() {
                  * Properties of a Nested.
                  * @memberof jspb.test.Deeply
                  * @interface INested
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -9887,6 +10337,7 @@ $root.jspb = (function() {
                  * @implements INested
                  * @constructor
                  * @param {jspb.test.Deeply.INested=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Nested(properties) {
                     if (properties)
@@ -9919,6 +10370,9 @@ $root.jspb = (function() {
                 Nested.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -9955,16 +10409,15 @@ $root.jspb = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply.Nested();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
-                        }
+                        reader.skipType(tag & 7, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -10069,6 +10522,7 @@ $root.jspb = (function() {
                      * @memberof jspb.test.Deeply.Nested
                      * @interface IMessage
                      * @property {number|null} [count] Message count
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                      */
 
                     /**
@@ -10078,6 +10532,7 @@ $root.jspb = (function() {
                      * @implements IMessage
                      * @constructor
                      * @param {jspb.test.Deeply.Nested.IMessage=} [properties] Properties to set
+                     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                      */
                     function Message(properties) {
                         if (properties)
@@ -10120,6 +10575,9 @@ $root.jspb = (function() {
                             writer = $Writer.create();
                         if (message.count != null && Object.hasOwnProperty.call(message, "count"))
                             writer.uint32(/* id 1, wireType 0 =*/8).int32(message.count);
+                        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                            for (var i = 0; i < message.$unknowns.length; ++i)
+                                writer.raw(message.$unknowns[i]);
                         return writer;
                     };
 
@@ -10156,20 +10614,24 @@ $root.jspb = (function() {
                             throw Error("max depth exceeded");
                         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.jspb.test.Deeply.Nested.Message();
                         while (reader.pos < end) {
+                            var start = reader.pos;
                             var tag = reader.uint32();
                             if (tag === _end) {
                                 _end = undefined;
                                 break;
                             }
-                            switch (tag) {
-                            case 8: {
+                            var wireType = tag & 7;
+                            switch (tag >>>= 3) {
+                            case 1: {
+                                    if (wireType !== 0)
+                                        break;
                                     message.count = reader.int32();
-                                    break;
+                                    continue;
                                 }
-                            default:
-                                reader.skipType(tag & 7, _depth, tag >>> 3);
-                                break;
                             }
+                            reader.skipType(wireType, _depth, tag);
+                            $util.makeProp(message, "$unknowns", false);
+                            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                         }
                         if (_end !== undefined)
                             throw Error("missing end group");
@@ -10320,6 +10782,7 @@ $root.google = (function() {
              * @memberof google.protobuf
              * @interface IFileDescriptorSet
              * @property {Array.<google.protobuf.IFileDescriptorProto>|null} [file] FileDescriptorSet file
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -10329,6 +10792,7 @@ $root.google = (function() {
              * @implements IFileDescriptorSet
              * @constructor
              * @param {google.protobuf.IFileDescriptorSet=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FileDescriptorSet(properties) {
                 this.file = [];
@@ -10373,6 +10837,9 @@ $root.google = (function() {
                 if (message.file != null && message.file.length)
                     for (var i = 0; i < message.file.length; ++i)
                         $root.google.protobuf.FileDescriptorProto.encode(message.file[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -10409,22 +10876,26 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorSet();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.file && message.file.length))
                                 message.file = [];
                             message.file.push($root.google.protobuf.FileDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -10609,6 +11080,7 @@ $root.google = (function() {
              * @property {google.protobuf.ISourceCodeInfo|null} [sourceCodeInfo] FileDescriptorProto sourceCodeInfo
              * @property {string|null} [syntax] FileDescriptorProto syntax
              * @property {google.protobuf.Edition|null} [edition] FileDescriptorProto edition
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -10618,6 +11090,7 @@ $root.google = (function() {
              * @implements IFileDescriptorProto
              * @constructor
              * @param {google.protobuf.IFileDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FileDescriptorProto(properties) {
                 this.dependency = [];
@@ -10806,6 +11279,9 @@ $root.google = (function() {
                 if (message.optionDependency != null && message.optionDependency.length)
                     for (var i = 0; i < message.optionDependency.length; ++i)
                         writer.uint32(/* id 15, wireType 2 =*/122).string(message.optionDependency[i]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -10842,100 +11318,134 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message["package"] = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.dependency && message.dependency.length))
                                 message.dependency = [];
                             message.dependency.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 80:
-                    case 82: {
-                            if (!(message.publicDependency && message.publicDependency.length))
-                                message.publicDependency = [];
-                            if ((tag & 7) === 2) {
+                    case 10: {
+                            if (wireType === 2) {
+                                if (!(message.publicDependency && message.publicDependency.length))
+                                    message.publicDependency = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.publicDependency.push(reader.int32());
-                            } else
-                                message.publicDependency.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.publicDependency && message.publicDependency.length))
+                                message.publicDependency = [];
+                            message.publicDependency.push(reader.int32());
+                            continue;
                         }
-                    case 88:
-                    case 90: {
-                            if (!(message.weakDependency && message.weakDependency.length))
-                                message.weakDependency = [];
-                            if ((tag & 7) === 2) {
+                    case 11: {
+                            if (wireType === 2) {
+                                if (!(message.weakDependency && message.weakDependency.length))
+                                    message.weakDependency = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.weakDependency.push(reader.int32());
-                            } else
-                                message.weakDependency.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.weakDependency && message.weakDependency.length))
+                                message.weakDependency = [];
+                            message.weakDependency.push(reader.int32());
+                            continue;
                         }
-                    case 122: {
+                    case 15: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.optionDependency && message.optionDependency.length))
                                 message.optionDependency = [];
                             message.optionDependency.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.messageType && message.messageType.length))
                                 message.messageType = [];
                             message.messageType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.service && message.service.length))
                                 message.service = [];
                             message.service.push($root.google.protobuf.ServiceDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.FileOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             message.sourceCodeInfo = $root.google.protobuf.SourceCodeInfo.decode(reader, reader.uint32(), undefined, _depth + 1, message.sourceCodeInfo);
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             message.syntax = reader.string();
-                            break;
+                            continue;
                         }
-                    case 112: {
+                    case 14: {
+                            if (wireType !== 0)
+                                break;
                             message.edition = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -11368,6 +11878,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.DescriptorProto.IReservedRange>|null} [reservedRange] DescriptorProto reservedRange
              * @property {Array.<string>|null} [reservedName] DescriptorProto reservedName
              * @property {google.protobuf.SymbolVisibility|null} [visibility] DescriptorProto visibility
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -11377,6 +11888,7 @@ $root.google = (function() {
              * @implements IDescriptorProto
              * @constructor
              * @param {google.protobuf.IDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function DescriptorProto(properties) {
                 this.field = [];
@@ -11535,6 +12047,9 @@ $root.google = (function() {
                         writer.uint32(/* id 10, wireType 2 =*/82).string(message.reservedName[i]);
                 if (message.visibility != null && Object.hasOwnProperty.call(message, "visibility"))
                     writer.uint32(/* id 11, wireType 0 =*/88).int32(message.visibility);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -11571,76 +12086,100 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.field && message.field.length))
                                 message.field = [];
                             message.field.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extension && message.extension.length))
                                 message.extension = [];
                             message.extension.push($root.google.protobuf.FieldDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.nestedType && message.nestedType.length))
                                 message.nestedType = [];
                             message.nestedType.push($root.google.protobuf.DescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.enumType && message.enumType.length))
                                 message.enumType = [];
                             message.enumType.push($root.google.protobuf.EnumDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.extensionRange && message.extensionRange.length))
                                 message.extensionRange = [];
                             message.extensionRange.push($root.google.protobuf.DescriptorProto.ExtensionRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.oneofDecl && message.oneofDecl.length))
                                 message.oneofDecl = [];
                             message.oneofDecl.push($root.google.protobuf.OneofDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.MessageOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 74: {
+                    case 9: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.DescriptorProto.ReservedRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.visibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -12003,6 +12542,7 @@ $root.google = (function() {
                  * @property {number|null} [start] ExtensionRange start
                  * @property {number|null} [end] ExtensionRange end
                  * @property {google.protobuf.IExtensionRangeOptions|null} [options] ExtensionRange options
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -12012,6 +12552,7 @@ $root.google = (function() {
                  * @implements IExtensionRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IExtensionRange=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function ExtensionRange(properties) {
                     if (properties)
@@ -12074,6 +12615,9 @@ $root.google = (function() {
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
                     if (message.options != null && Object.hasOwnProperty.call(message, "options"))
                         $root.google.protobuf.ExtensionRangeOptions.encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -12110,28 +12654,36 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto.ExtensionRange();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.options = $root.google.protobuf.ExtensionRangeOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -12275,6 +12827,7 @@ $root.google = (function() {
                  * @interface IReservedRange
                  * @property {number|null} [start] ReservedRange start
                  * @property {number|null} [end] ReservedRange end
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -12284,6 +12837,7 @@ $root.google = (function() {
                  * @implements IReservedRange
                  * @constructor
                  * @param {google.protobuf.DescriptorProto.IReservedRange=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function ReservedRange(properties) {
                     if (properties)
@@ -12336,6 +12890,9 @@ $root.google = (function() {
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
                     if (message.end != null && Object.hasOwnProperty.call(message, "end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -12372,24 +12929,30 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.DescriptorProto.ReservedRange();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -12525,6 +13088,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.ExtensionRangeOptions.IDeclaration>|null} [declaration] ExtensionRangeOptions declaration
              * @property {google.protobuf.IFeatureSet|null} [features] ExtensionRangeOptions features
              * @property {google.protobuf.ExtensionRangeOptions.VerificationState|null} [verification] ExtensionRangeOptions verification
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -12534,6 +13098,7 @@ $root.google = (function() {
              * @implements IExtensionRangeOptions
              * @constructor
              * @param {google.protobuf.IExtensionRangeOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function ExtensionRangeOptions(properties) {
                 this.uninterpretedOption = [];
@@ -12610,6 +13175,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -12646,36 +13214,46 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 7994: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.declaration && message.declaration.length))
                                 message.declaration = [];
                             message.declaration.push($root.google.protobuf.ExtensionRangeOptions.Declaration.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 402: {
+                    case 50: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.verification = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -12882,6 +13460,7 @@ $root.google = (function() {
                  * @property {string|null} [type] Declaration type
                  * @property {boolean|null} [reserved] Declaration reserved
                  * @property {boolean|null} [repeated] Declaration repeated
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -12891,6 +13470,7 @@ $root.google = (function() {
                  * @implements IDeclaration
                  * @constructor
                  * @param {google.protobuf.ExtensionRangeOptions.IDeclaration=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Declaration(properties) {
                     if (properties)
@@ -12973,6 +13553,9 @@ $root.google = (function() {
                         writer.uint32(/* id 5, wireType 0 =*/40).bool(message.reserved);
                     if (message.repeated != null && Object.hasOwnProperty.call(message, "repeated"))
                         writer.uint32(/* id 6, wireType 0 =*/48).bool(message.repeated);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -13009,36 +13592,48 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ExtensionRangeOptions.Declaration();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.number = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.fullName = reader.string();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.type = reader.string();
-                                break;
+                                continue;
                             }
-                        case 40: {
+                        case 5: {
+                                if (wireType !== 0)
+                                    break;
                                 message.reserved = reader.bool();
-                                break;
+                                continue;
                             }
-                        case 48: {
+                        case 6: {
+                                if (wireType !== 0)
+                                    break;
                                 message.repeated = reader.bool();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -13219,6 +13814,7 @@ $root.google = (function() {
              * @property {string|null} [jsonName] FieldDescriptorProto jsonName
              * @property {google.protobuf.IFieldOptions|null} [options] FieldDescriptorProto options
              * @property {boolean|null} [proto3Optional] FieldDescriptorProto proto3Optional
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -13228,6 +13824,7 @@ $root.google = (function() {
              * @implements IFieldDescriptorProto
              * @constructor
              * @param {google.protobuf.IFieldDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FieldDescriptorProto(properties) {
                 if (properties)
@@ -13370,6 +13967,9 @@ $root.google = (function() {
                     writer.uint32(/* id 10, wireType 2 =*/82).string(message.jsonName);
                 if (message.proto3Optional != null && Object.hasOwnProperty.call(message, "proto3Optional"))
                     writer.uint32(/* id 17, wireType 0 =*/136).bool(message.proto3Optional);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -13406,60 +14006,84 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.number = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.label = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.type = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 50: {
+                    case 6: {
+                            if (wireType !== 2)
+                                break;
                             message.typeName = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.extendee = reader.string();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.defaultValue = reader.string();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.oneofIndex = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 82: {
+                    case 10: {
+                            if (wireType !== 2)
+                                break;
                             message.jsonName = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.FieldOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.proto3Optional = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -13852,6 +14476,7 @@ $root.google = (function() {
              * @interface IOneofDescriptorProto
              * @property {string|null} [name] OneofDescriptorProto name
              * @property {google.protobuf.IOneofOptions|null} [options] OneofDescriptorProto options
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -13861,6 +14486,7 @@ $root.google = (function() {
              * @implements IOneofDescriptorProto
              * @constructor
              * @param {google.protobuf.IOneofDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function OneofDescriptorProto(properties) {
                 if (properties)
@@ -13913,6 +14539,9 @@ $root.google = (function() {
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.name);
                 if (message.options != null && Object.hasOwnProperty.call(message, "options"))
                     $root.google.protobuf.OneofOptions.encode(message.options, writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -13949,24 +14578,30 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.OneofDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.OneofOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -14106,6 +14741,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.EnumDescriptorProto.IEnumReservedRange>|null} [reservedRange] EnumDescriptorProto reservedRange
              * @property {Array.<string>|null} [reservedName] EnumDescriptorProto reservedName
              * @property {google.protobuf.SymbolVisibility|null} [visibility] EnumDescriptorProto visibility
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -14115,6 +14751,7 @@ $root.google = (function() {
              * @implements IEnumDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function EnumDescriptorProto(properties) {
                 this.value = [];
@@ -14213,6 +14850,9 @@ $root.google = (function() {
                         writer.uint32(/* id 5, wireType 2 =*/42).string(message.reservedName[i]);
                 if (message.visibility != null && Object.hasOwnProperty.call(message, "visibility"))
                     writer.uint32(/* id 6, wireType 0 =*/48).int32(message.visibility);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -14249,46 +14889,60 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.value && message.value.length))
                                 message.value = [];
                             message.value.push($root.google.protobuf.EnumValueDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.EnumOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedRange && message.reservedRange.length))
                                 message.reservedRange = [];
                             message.reservedRange.push($root.google.protobuf.EnumDescriptorProto.EnumReservedRange.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 42: {
+                    case 5: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.reservedName && message.reservedName.length))
                                 message.reservedName = [];
                             message.reservedName.push(reader.string());
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.visibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -14525,6 +15179,7 @@ $root.google = (function() {
                  * @interface IEnumReservedRange
                  * @property {number|null} [start] EnumReservedRange start
                  * @property {number|null} [end] EnumReservedRange end
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -14534,6 +15189,7 @@ $root.google = (function() {
                  * @implements IEnumReservedRange
                  * @constructor
                  * @param {google.protobuf.EnumDescriptorProto.IEnumReservedRange=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function EnumReservedRange(properties) {
                     if (properties)
@@ -14586,6 +15242,9 @@ $root.google = (function() {
                         writer.uint32(/* id 1, wireType 0 =*/8).int32(message.start);
                     if (message.end != null && Object.hasOwnProperty.call(message, "end"))
                         writer.uint32(/* id 2, wireType 0 =*/16).int32(message.end);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -14622,24 +15281,30 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumDescriptorProto.EnumReservedRange();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.start = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -14774,6 +15439,7 @@ $root.google = (function() {
              * @property {string|null} [name] EnumValueDescriptorProto name
              * @property {number|null} [number] EnumValueDescriptorProto number
              * @property {google.protobuf.IEnumValueOptions|null} [options] EnumValueDescriptorProto options
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -14783,6 +15449,7 @@ $root.google = (function() {
              * @implements IEnumValueDescriptorProto
              * @constructor
              * @param {google.protobuf.IEnumValueDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function EnumValueDescriptorProto(properties) {
                 if (properties)
@@ -14845,6 +15512,9 @@ $root.google = (function() {
                     writer.uint32(/* id 2, wireType 0 =*/16).int32(message.number);
                 if (message.options != null && Object.hasOwnProperty.call(message, "options"))
                     $root.google.protobuf.EnumValueOptions.encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -14881,28 +15551,36 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumValueDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.number = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.EnumValueOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -15047,6 +15725,7 @@ $root.google = (function() {
              * @property {string|null} [name] ServiceDescriptorProto name
              * @property {Array.<google.protobuf.IMethodDescriptorProto>|null} [method] ServiceDescriptorProto method
              * @property {google.protobuf.IServiceOptions|null} [options] ServiceDescriptorProto options
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -15056,6 +15735,7 @@ $root.google = (function() {
              * @implements IServiceDescriptorProto
              * @constructor
              * @param {google.protobuf.IServiceDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function ServiceDescriptorProto(properties) {
                 this.method = [];
@@ -15120,6 +15800,9 @@ $root.google = (function() {
                         $root.google.protobuf.MethodDescriptorProto.encode(message.method[i], writer.uint32(/* id 2, wireType 2 =*/18).fork()).ldelim();
                 if (message.options != null && Object.hasOwnProperty.call(message, "options"))
                     $root.google.protobuf.ServiceOptions.encode(message.options, writer.uint32(/* id 3, wireType 2 =*/26).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -15156,30 +15839,38 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ServiceDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.method && message.method.length))
                                 message.method = [];
                             message.method.push($root.google.protobuf.MethodDescriptorProto.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.ServiceOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -15345,6 +16036,7 @@ $root.google = (function() {
              * @property {google.protobuf.IMethodOptions|null} [options] MethodDescriptorProto options
              * @property {boolean|null} [clientStreaming] MethodDescriptorProto clientStreaming
              * @property {boolean|null} [serverStreaming] MethodDescriptorProto serverStreaming
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -15354,6 +16046,7 @@ $root.google = (function() {
              * @implements IMethodDescriptorProto
              * @constructor
              * @param {google.protobuf.IMethodDescriptorProto=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function MethodDescriptorProto(properties) {
                 if (properties)
@@ -15446,6 +16139,9 @@ $root.google = (function() {
                     writer.uint32(/* id 5, wireType 0 =*/40).bool(message.clientStreaming);
                 if (message.serverStreaming != null && Object.hasOwnProperty.call(message, "serverStreaming"))
                     writer.uint32(/* id 6, wireType 0 =*/48).bool(message.serverStreaming);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -15482,40 +16178,54 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodDescriptorProto();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.name = reader.string();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.inputType = reader.string();
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.outputType = reader.string();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.options = $root.google.protobuf.MethodOptions.decode(reader, reader.uint32(), undefined, _depth + 1, message.options);
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.clientStreaming = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.serverStreaming = reader.bool();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -15702,6 +16412,7 @@ $root.google = (function() {
              * @property {string|null} [rubyPackage] FileOptions rubyPackage
              * @property {google.protobuf.IFeatureSet|null} [features] FileOptions features
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] FileOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -15711,6 +16422,7 @@ $root.google = (function() {
              * @implements IFileOptions
              * @constructor
              * @param {google.protobuf.IFileOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FileOptions(properties) {
                 this.uninterpretedOption = [];
@@ -15955,6 +16667,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -15991,102 +16706,146 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FileOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.javaPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.javaOuterClassname = reader.string();
-                            break;
+                            continue;
                         }
-                    case 80: {
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
                             message.javaMultipleFiles = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 160: {
+                    case 20: {
+                            if (wireType !== 0)
+                                break;
                             message.javaGenerateEqualsAndHash = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 216: {
+                    case 27: {
+                            if (wireType !== 0)
+                                break;
                             message.javaStringCheckUtf8 = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 72: {
+                    case 9: {
+                            if (wireType !== 0)
+                                break;
                             message.optimizeFor = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 90: {
+                    case 11: {
+                            if (wireType !== 2)
+                                break;
                             message.goPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 128: {
+                    case 16: {
+                            if (wireType !== 0)
+                                break;
                             message.ccGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.javaGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 144: {
+                    case 18: {
+                            if (wireType !== 0)
+                                break;
                             message.pyGenericServices = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 184: {
+                    case 23: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 248: {
+                    case 31: {
+                            if (wireType !== 0)
+                                break;
                             message.ccEnableArenas = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 290: {
+                    case 36: {
+                            if (wireType !== 2)
+                                break;
                             message.objcClassPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 298: {
+                    case 37: {
+                            if (wireType !== 2)
+                                break;
                             message.csharpNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 314: {
+                    case 39: {
+                            if (wireType !== 2)
+                                break;
                             message.swiftPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 322: {
+                    case 40: {
+                            if (wireType !== 2)
+                                break;
                             message.phpClassPrefix = reader.string();
-                            break;
+                            continue;
                         }
-                    case 330: {
+                    case 41: {
+                            if (wireType !== 2)
+                                break;
                             message.phpNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 354: {
+                    case 44: {
+                            if (wireType !== 2)
+                                break;
                             message.phpMetadataNamespace = reader.string();
-                            break;
+                            continue;
                         }
-                    case 362: {
+                    case 45: {
+                            if (wireType !== 2)
+                                break;
                             message.rubyPackage = reader.string();
-                            break;
+                            continue;
                         }
-                    case 402: {
+                    case 50: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -16437,6 +17196,7 @@ $root.google = (function() {
              * @property {boolean|null} [deprecatedLegacyJsonFieldConflicts] MessageOptions deprecatedLegacyJsonFieldConflicts
              * @property {google.protobuf.IFeatureSet|null} [features] MessageOptions features
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] MessageOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -16446,6 +17206,7 @@ $root.google = (function() {
              * @implements IMessageOptions
              * @constructor
              * @param {google.protobuf.IMessageOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function MessageOptions(properties) {
                 this.uninterpretedOption = [];
@@ -16550,6 +17311,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -16586,46 +17350,62 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MessageOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.messageSetWireFormat = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.noStandardDescriptorAccessor = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 56: {
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
                             message.mapEntry = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 88: {
+                    case 11: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 98: {
+                    case 12: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -16831,6 +17611,7 @@ $root.google = (function() {
              * @property {google.protobuf.IFeatureSet|null} [features] FieldOptions features
              * @property {google.protobuf.FieldOptions.IFeatureSupport|null} [featureSupport] FieldOptions featureSupport
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] FieldOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -16840,6 +17621,7 @@ $root.google = (function() {
              * @implements IFieldOptions
              * @constructor
              * @param {google.protobuf.IFieldOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FieldOptions(properties) {
                 this.targets = [];
@@ -17018,6 +17800,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -17054,84 +17839,116 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.ctype = reader.int32();
-                            break;
+                            continue;
+                        }
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
+                            message.packed = reader.bool();
+                            continue;
+                        }
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
+                            message.jstype = reader.int32();
+                            continue;
+                        }
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
+                            message.lazy = reader.bool();
+                            continue;
+                        }
+                    case 15: {
+                            if (wireType !== 0)
+                                break;
+                            message.unverifiedLazy = reader.bool();
+                            continue;
+                        }
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
+                            message.deprecated = reader.bool();
+                            continue;
+                        }
+                    case 10: {
+                            if (wireType !== 0)
+                                break;
+                            message.weak = reader.bool();
+                            continue;
                         }
                     case 16: {
-                            message.packed = reader.bool();
-                            break;
-                        }
-                    case 48: {
-                            message.jstype = reader.int32();
-                            break;
-                        }
-                    case 40: {
-                            message.lazy = reader.bool();
-                            break;
-                        }
-                    case 120: {
-                            message.unverifiedLazy = reader.bool();
-                            break;
-                        }
-                    case 24: {
-                            message.deprecated = reader.bool();
-                            break;
-                        }
-                    case 80: {
-                            message.weak = reader.bool();
-                            break;
-                        }
-                    case 128: {
+                            if (wireType !== 0)
+                                break;
                             message.debugRedact = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 136: {
+                    case 17: {
+                            if (wireType !== 0)
+                                break;
                             message.retention = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 152:
-                    case 154: {
-                            if (!(message.targets && message.targets.length))
-                                message.targets = [];
-                            if ((tag & 7) === 2) {
+                    case 19: {
+                            if (wireType === 2) {
+                                if (!(message.targets && message.targets.length))
+                                    message.targets = [];
                                 var end2 = reader.uint32() + reader.pos;
                                 while (reader.pos < end2)
                                     message.targets.push(reader.int32());
-                            } else
-                                message.targets.push(reader.int32());
-                            break;
+                                continue;
+                            }
+                            if (wireType !== 0)
+                                break;
+                            if (!(message.targets && message.targets.length))
+                                message.targets = [];
+                            message.targets.push(reader.int32());
+                            continue;
                         }
-                    case 162: {
+                    case 20: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.editionDefaults && message.editionDefaults.length))
                                 message.editionDefaults = [];
                             message.editionDefaults.push($root.google.protobuf.FieldOptions.EditionDefault.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 170: {
+                    case 21: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 178: {
+                    case 22: {
+                            if (wireType !== 2)
+                                break;
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, _depth + 1, message.featureSupport);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -17622,6 +18439,7 @@ $root.google = (function() {
                  * @interface IEditionDefault
                  * @property {google.protobuf.Edition|null} [edition] EditionDefault edition
                  * @property {string|null} [value] EditionDefault value
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -17631,6 +18449,7 @@ $root.google = (function() {
                  * @implements IEditionDefault
                  * @constructor
                  * @param {google.protobuf.FieldOptions.IEditionDefault=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function EditionDefault(properties) {
                     if (properties)
@@ -17683,6 +18502,9 @@ $root.google = (function() {
                         writer.uint32(/* id 2, wireType 2 =*/18).string(message.value);
                     if (message.edition != null && Object.hasOwnProperty.call(message, "edition"))
                         writer.uint32(/* id 3, wireType 0 =*/24).int32(message.edition);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -17719,24 +18541,30 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.EditionDefault();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 24: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.edition = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.value = reader.string();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -17938,6 +18766,7 @@ $root.google = (function() {
                  * @property {google.protobuf.Edition|null} [editionDeprecated] FeatureSupport editionDeprecated
                  * @property {string|null} [deprecationWarning] FeatureSupport deprecationWarning
                  * @property {google.protobuf.Edition|null} [editionRemoved] FeatureSupport editionRemoved
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -17947,6 +18776,7 @@ $root.google = (function() {
                  * @implements IFeatureSupport
                  * @constructor
                  * @param {google.protobuf.FieldOptions.IFeatureSupport=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function FeatureSupport(properties) {
                     if (properties)
@@ -18019,6 +18849,9 @@ $root.google = (function() {
                         writer.uint32(/* id 3, wireType 2 =*/26).string(message.deprecationWarning);
                     if (message.editionRemoved != null && Object.hasOwnProperty.call(message, "editionRemoved"))
                         writer.uint32(/* id 4, wireType 0 =*/32).int32(message.editionRemoved);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -18055,32 +18888,42 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FieldOptions.FeatureSupport();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionIntroduced = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionDeprecated = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.deprecationWarning = reader.string();
-                                break;
+                                continue;
                             }
-                        case 32: {
+                        case 4: {
+                                if (wireType !== 0)
+                                    break;
                                 message.editionRemoved = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -18437,6 +19280,7 @@ $root.google = (function() {
              * @interface IOneofOptions
              * @property {google.protobuf.IFeatureSet|null} [features] OneofOptions features
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] OneofOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -18446,6 +19290,7 @@ $root.google = (function() {
              * @implements IOneofOptions
              * @constructor
              * @param {google.protobuf.IOneofOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function OneofOptions(properties) {
                 this.uninterpretedOption = [];
@@ -18500,6 +19345,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -18536,26 +19384,32 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.OneofOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -18712,6 +19566,7 @@ $root.google = (function() {
              * @property {google.protobuf.IFeatureSet|null} [features] EnumOptions features
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] EnumOptions uninterpretedOption
              * @property {string|null} [".jspb.test.IsExtension.simpleOption"] EnumOptions .jspb.test.IsExtension.simpleOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -18722,6 +19577,7 @@ $root.google = (function() {
              * @constructor
              * @param {google.protobuf.IEnumOptions=} [properties] Properties to set
              * @property {string} ".jspb.test.IsExtension.simpleOption" EnumOptions .jspb.test.IsExtension.simpleOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function EnumOptions(properties) {
                 this.uninterpretedOption = [];
@@ -18810,6 +19666,9 @@ $root.google = (function() {
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
                 if (message[".jspb.test.IsExtension.simpleOption"] != null && Object.hasOwnProperty.call(message, ".jspb.test.IsExtension.simpleOption"))
                     writer.uint32(/* id 42113038, wireType 2 =*/336904306).string(message[".jspb.test.IsExtension.simpleOption"]);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -18846,42 +19705,56 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 16: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.allowAlias = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecatedLegacyJsonFieldConflicts = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 336904306: {
+                    case 42113038: {
+                            if (wireType !== 2)
+                                break;
                             message[".jspb.test.IsExtension.simpleOption"] = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19070,6 +19943,7 @@ $root.google = (function() {
              * @property {boolean|null} [debugRedact] EnumValueOptions debugRedact
              * @property {google.protobuf.FieldOptions.IFeatureSupport|null} [featureSupport] EnumValueOptions featureSupport
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] EnumValueOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -19079,6 +19953,7 @@ $root.google = (function() {
              * @implements IEnumValueOptions
              * @constructor
              * @param {google.protobuf.IEnumValueOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function EnumValueOptions(properties) {
                 this.uninterpretedOption = [];
@@ -19163,6 +20038,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -19199,38 +20077,50 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.EnumValueOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 18: {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.debugRedact = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 34: {
+                    case 4: {
+                            if (wireType !== 2)
+                                break;
                             message.featureSupport = $root.google.protobuf.FieldOptions.FeatureSupport.decode(reader, reader.uint32(), undefined, _depth + 1, message.featureSupport);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19414,6 +20304,7 @@ $root.google = (function() {
              * @property {google.protobuf.IFeatureSet|null} [features] ServiceOptions features
              * @property {boolean|null} [deprecated] ServiceOptions deprecated
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] ServiceOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -19423,6 +20314,7 @@ $root.google = (function() {
              * @implements IServiceOptions
              * @constructor
              * @param {google.protobuf.IServiceOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function ServiceOptions(properties) {
                 this.uninterpretedOption = [];
@@ -19487,6 +20379,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -19523,30 +20418,38 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.ServiceOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 274: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 34: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 264: {
+                    case 33: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -19710,6 +20613,7 @@ $root.google = (function() {
              * @property {google.protobuf.MethodOptions.IdempotencyLevel|null} [idempotencyLevel] MethodOptions idempotencyLevel
              * @property {google.protobuf.IFeatureSet|null} [features] MethodOptions features
              * @property {Array.<google.protobuf.IUninterpretedOption>|null} [uninterpretedOption] MethodOptions uninterpretedOption
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -19719,6 +20623,7 @@ $root.google = (function() {
              * @implements IMethodOptions
              * @constructor
              * @param {google.protobuf.IMethodOptions=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function MethodOptions(properties) {
                 this.uninterpretedOption = [];
@@ -19793,6 +20698,9 @@ $root.google = (function() {
                 if (message.uninterpretedOption != null && message.uninterpretedOption.length)
                     for (var i = 0; i < message.uninterpretedOption.length; ++i)
                         $root.google.protobuf.UninterpretedOption.encode(message.uninterpretedOption[i], writer.uint32(/* id 999, wireType 2 =*/7994).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -19829,34 +20737,44 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.MethodOptions();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 264: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 33: {
+                            if (wireType !== 0)
+                                break;
                             message.deprecated = reader.bool();
-                            break;
+                            continue;
                         }
-                    case 272: {
+                    case 34: {
+                            if (wireType !== 0)
+                                break;
                             message.idempotencyLevel = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 282: {
+                    case 35: {
+                            if (wireType !== 2)
+                                break;
                             message.features = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.features);
-                            break;
+                            continue;
                         }
-                    case 7994: {
+                    case 999: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.uninterpretedOption && message.uninterpretedOption.length))
                                 message.uninterpretedOption = [];
                             message.uninterpretedOption.push($root.google.protobuf.UninterpretedOption.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -20071,6 +20989,7 @@ $root.google = (function() {
              * @property {number|null} [doubleValue] UninterpretedOption doubleValue
              * @property {Uint8Array|null} [stringValue] UninterpretedOption stringValue
              * @property {string|null} [aggregateValue] UninterpretedOption aggregateValue
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -20080,6 +20999,7 @@ $root.google = (function() {
              * @implements IUninterpretedOption
              * @constructor
              * @param {google.protobuf.IUninterpretedOption=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function UninterpretedOption(properties) {
                 this.name = [];
@@ -20184,6 +21104,9 @@ $root.google = (function() {
                     writer.uint32(/* id 7, wireType 2 =*/58).bytes(message.stringValue);
                 if (message.aggregateValue != null && Object.hasOwnProperty.call(message, "aggregateValue"))
                     writer.uint32(/* id 8, wireType 2 =*/66).string(message.aggregateValue);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -20220,46 +21143,62 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.UninterpretedOption();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 18: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 2: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.name && message.name.length))
                                 message.name = [];
                             message.name.push($root.google.protobuf.UninterpretedOption.NamePart.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 26: {
+                    case 3: {
+                            if (wireType !== 2)
+                                break;
                             message.identifierValue = reader.string();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.positiveIntValue = reader.uint64();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.negativeIntValue = reader.int64();
-                            break;
+                            continue;
                         }
-                    case 49: {
+                    case 6: {
+                            if (wireType !== 1)
+                                break;
                             message.doubleValue = reader.double();
-                            break;
+                            continue;
                         }
-                    case 58: {
+                    case 7: {
+                            if (wireType !== 2)
+                                break;
                             message.stringValue = reader.bytes();
-                            break;
+                            continue;
                         }
-                    case 66: {
+                    case 8: {
+                            if (wireType !== 2)
+                                break;
                             message.aggregateValue = reader.string();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -20482,6 +21421,7 @@ $root.google = (function() {
                  * @interface INamePart
                  * @property {string} namePart NamePart namePart
                  * @property {boolean} isExtension NamePart isExtension
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -20491,6 +21431,7 @@ $root.google = (function() {
                  * @implements INamePart
                  * @constructor
                  * @param {google.protobuf.UninterpretedOption.INamePart=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function NamePart(properties) {
                     if (properties)
@@ -20541,6 +21482,9 @@ $root.google = (function() {
                         writer = $Writer.create();
                     writer.uint32(/* id 1, wireType 2 =*/10).string(message.namePart);
                     writer.uint32(/* id 2, wireType 0 =*/16).bool(message.isExtension);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -20577,24 +21521,30 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.UninterpretedOption.NamePart();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 10: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType !== 2)
+                                    break;
                                 message.namePart = reader.string();
-                                break;
+                                continue;
                             }
-                        case 16: {
+                        case 2: {
+                                if (wireType !== 0)
+                                    break;
                                 message.isExtension = reader.bool();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -20736,6 +21686,7 @@ $root.google = (function() {
              * @property {google.protobuf.FeatureSet.JsonFormat|null} [jsonFormat] FeatureSet jsonFormat
              * @property {google.protobuf.FeatureSet.EnforceNamingStyle|null} [enforceNamingStyle] FeatureSet enforceNamingStyle
              * @property {google.protobuf.FeatureSet.VisibilityFeature.DefaultSymbolVisibility|null} [defaultSymbolVisibility] FeatureSet defaultSymbolVisibility
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -20745,6 +21696,7 @@ $root.google = (function() {
              * @implements IFeatureSet
              * @constructor
              * @param {google.protobuf.IFeatureSet=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FeatureSet(properties) {
                 if (properties)
@@ -20857,6 +21809,9 @@ $root.google = (function() {
                     writer.uint32(/* id 7, wireType 0 =*/56).int32(message.enforceNamingStyle);
                 if (message.defaultSymbolVisibility != null && Object.hasOwnProperty.call(message, "defaultSymbolVisibility"))
                     writer.uint32(/* id 8, wireType 0 =*/64).int32(message.defaultSymbolVisibility);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -20893,48 +21848,66 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 8: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 0)
+                                break;
                             message.fieldPresence = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 16: {
+                    case 2: {
+                            if (wireType !== 0)
+                                break;
                             message.enumType = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 24: {
+                    case 3: {
+                            if (wireType !== 0)
+                                break;
                             message.repeatedFieldEncoding = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.utf8Validation = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.messageEncoding = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 48: {
+                    case 6: {
+                            if (wireType !== 0)
+                                break;
                             message.jsonFormat = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 56: {
+                    case 7: {
+                            if (wireType !== 0)
+                                break;
                             message.enforceNamingStyle = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 64: {
+                    case 8: {
+                            if (wireType !== 0)
+                                break;
                             message.defaultSymbolVisibility = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -21429,6 +22402,7 @@ $root.google = (function() {
                  * Properties of a VisibilityFeature.
                  * @memberof google.protobuf.FeatureSet
                  * @interface IVisibilityFeature
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -21438,6 +22412,7 @@ $root.google = (function() {
                  * @implements IVisibilityFeature
                  * @constructor
                  * @param {google.protobuf.FeatureSet.IVisibilityFeature=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function VisibilityFeature(properties) {
                     if (properties)
@@ -21470,6 +22445,9 @@ $root.google = (function() {
                 VisibilityFeature.encode = function encode(message, writer) {
                     if (!writer)
                         writer = $Writer.create();
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -21506,16 +22484,15 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSet.VisibilityFeature();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
-                        }
+                        reader.skipType(tag & 7, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -21648,6 +22625,7 @@ $root.google = (function() {
              * @property {Array.<google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault>|null} [defaults] FeatureSetDefaults defaults
              * @property {google.protobuf.Edition|null} [minimumEdition] FeatureSetDefaults minimumEdition
              * @property {google.protobuf.Edition|null} [maximumEdition] FeatureSetDefaults maximumEdition
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -21657,6 +22635,7 @@ $root.google = (function() {
              * @implements IFeatureSetDefaults
              * @constructor
              * @param {google.protobuf.IFeatureSetDefaults=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function FeatureSetDefaults(properties) {
                 this.defaults = [];
@@ -21721,6 +22700,9 @@ $root.google = (function() {
                     writer.uint32(/* id 4, wireType 0 =*/32).int32(message.minimumEdition);
                 if (message.maximumEdition != null && Object.hasOwnProperty.call(message, "maximumEdition"))
                     writer.uint32(/* id 5, wireType 0 =*/40).int32(message.maximumEdition);
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -21757,30 +22739,38 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.defaults && message.defaults.length))
                                 message.defaults = [];
                             message.defaults.push($root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    case 32: {
+                    case 4: {
+                            if (wireType !== 0)
+                                break;
                             message.minimumEdition = reader.int32();
-                            break;
+                            continue;
                         }
-                    case 40: {
+                    case 5: {
+                            if (wireType !== 0)
+                                break;
                             message.maximumEdition = reader.int32();
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -22073,6 +23063,7 @@ $root.google = (function() {
                  * @property {google.protobuf.Edition|null} [edition] FeatureSetEditionDefault edition
                  * @property {google.protobuf.IFeatureSet|null} [overridableFeatures] FeatureSetEditionDefault overridableFeatures
                  * @property {google.protobuf.IFeatureSet|null} [fixedFeatures] FeatureSetEditionDefault fixedFeatures
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -22082,6 +23073,7 @@ $root.google = (function() {
                  * @implements IFeatureSetEditionDefault
                  * @constructor
                  * @param {google.protobuf.FeatureSetDefaults.IFeatureSetEditionDefault=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function FeatureSetEditionDefault(properties) {
                     if (properties)
@@ -22144,6 +23136,9 @@ $root.google = (function() {
                         $root.google.protobuf.FeatureSet.encode(message.overridableFeatures, writer.uint32(/* id 4, wireType 2 =*/34).fork()).ldelim();
                     if (message.fixedFeatures != null && Object.hasOwnProperty.call(message, "fixedFeatures"))
                         $root.google.protobuf.FeatureSet.encode(message.fixedFeatures, writer.uint32(/* id 5, wireType 2 =*/42).fork()).ldelim();
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -22180,28 +23175,36 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.FeatureSetDefaults.FeatureSetEditionDefault();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 24: {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.edition = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 34: {
+                        case 4: {
+                                if (wireType !== 2)
+                                    break;
                                 message.overridableFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.overridableFeatures);
-                                break;
+                                continue;
                             }
-                        case 42: {
+                        case 5: {
+                                if (wireType !== 2)
+                                    break;
                                 message.fixedFeatures = $root.google.protobuf.FeatureSet.decode(reader, reader.uint32(), undefined, _depth + 1, message.fixedFeatures);
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -22421,6 +23424,7 @@ $root.google = (function() {
              * @memberof google.protobuf
              * @interface ISourceCodeInfo
              * @property {Array.<google.protobuf.SourceCodeInfo.ILocation>|null} [location] SourceCodeInfo location
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -22430,6 +23434,7 @@ $root.google = (function() {
              * @implements ISourceCodeInfo
              * @constructor
              * @param {google.protobuf.ISourceCodeInfo=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function SourceCodeInfo(properties) {
                 this.location = [];
@@ -22474,6 +23479,9 @@ $root.google = (function() {
                 if (message.location != null && message.location.length)
                     for (var i = 0; i < message.location.length; ++i)
                         $root.google.protobuf.SourceCodeInfo.Location.encode(message.location[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -22510,22 +23518,26 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.SourceCodeInfo();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.location && message.location.length))
                                 message.location = [];
                             message.location.push($root.google.protobuf.SourceCodeInfo.Location.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -22664,6 +23676,7 @@ $root.google = (function() {
                  * @property {string|null} [leadingComments] Location leadingComments
                  * @property {string|null} [trailingComments] Location trailingComments
                  * @property {Array.<string>|null} [leadingDetachedComments] Location leadingDetachedComments
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -22673,6 +23686,7 @@ $root.google = (function() {
                  * @implements ILocation
                  * @constructor
                  * @param {google.protobuf.SourceCodeInfo.ILocation=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Location(properties) {
                     this.path = [];
@@ -22767,6 +23781,9 @@ $root.google = (function() {
                     if (message.leadingDetachedComments != null && message.leadingDetachedComments.length)
                         for (var i = 0; i < message.leadingDetachedComments.length; ++i)
                             writer.uint32(/* id 6, wireType 2 =*/50).string(message.leadingDetachedComments[i]);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -22803,54 +23820,70 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.SourceCodeInfo.Location();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8:
-                        case 10: {
-                                if (!(message.path && message.path.length))
-                                    message.path = [];
-                                if ((tag & 7) === 2) {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType === 2) {
+                                    if (!(message.path && message.path.length))
+                                        message.path = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
-                                } else
-                                    message.path.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                message.path.push(reader.int32());
+                                continue;
                             }
-                        case 16:
-                        case 18: {
-                                if (!(message.span && message.span.length))
-                                    message.span = [];
-                                if ((tag & 7) === 2) {
+                        case 2: {
+                                if (wireType === 2) {
+                                    if (!(message.span && message.span.length))
+                                        message.span = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.span.push(reader.int32());
-                                } else
-                                    message.span.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.span && message.span.length))
+                                    message.span = [];
+                                message.span.push(reader.int32());
+                                continue;
                             }
-                        case 26: {
+                        case 3: {
+                                if (wireType !== 2)
+                                    break;
                                 message.leadingComments = reader.string();
-                                break;
+                                continue;
                             }
-                        case 34: {
+                        case 4: {
+                                if (wireType !== 2)
+                                    break;
                                 message.trailingComments = reader.string();
-                                break;
+                                continue;
                             }
-                        case 50: {
+                        case 6: {
+                                if (wireType !== 2)
+                                    break;
                                 if (!(message.leadingDetachedComments && message.leadingDetachedComments.length))
                                     message.leadingDetachedComments = [];
                                 message.leadingDetachedComments.push(reader.string());
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");
@@ -23045,6 +24078,7 @@ $root.google = (function() {
              * @memberof google.protobuf
              * @interface IGeneratedCodeInfo
              * @property {Array.<google.protobuf.GeneratedCodeInfo.IAnnotation>|null} [annotation] GeneratedCodeInfo annotation
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
 
             /**
@@ -23054,6 +24088,7 @@ $root.google = (function() {
              * @implements IGeneratedCodeInfo
              * @constructor
              * @param {google.protobuf.IGeneratedCodeInfo=} [properties] Properties to set
+             * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
              */
             function GeneratedCodeInfo(properties) {
                 this.annotation = [];
@@ -23098,6 +24133,9 @@ $root.google = (function() {
                 if (message.annotation != null && message.annotation.length)
                     for (var i = 0; i < message.annotation.length; ++i)
                         $root.google.protobuf.GeneratedCodeInfo.Annotation.encode(message.annotation[i], writer.uint32(/* id 1, wireType 2 =*/10).fork()).ldelim();
+                if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                    for (var i = 0; i < message.$unknowns.length; ++i)
+                        writer.raw(message.$unknowns[i]);
                 return writer;
             };
 
@@ -23134,22 +24172,26 @@ $root.google = (function() {
                     throw Error("max depth exceeded");
                 var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo();
                 while (reader.pos < end) {
+                    var start = reader.pos;
                     var tag = reader.uint32();
                     if (tag === _end) {
                         _end = undefined;
                         break;
                     }
-                    switch (tag) {
-                    case 10: {
+                    var wireType = tag & 7;
+                    switch (tag >>>= 3) {
+                    case 1: {
+                            if (wireType !== 2)
+                                break;
                             if (!(message.annotation && message.annotation.length))
                                 message.annotation = [];
                             message.annotation.push($root.google.protobuf.GeneratedCodeInfo.Annotation.decode(reader, reader.uint32(), undefined, _depth + 1));
-                            break;
+                            continue;
                         }
-                    default:
-                        reader.skipType(tag & 7, _depth, tag >>> 3);
-                        break;
                     }
+                    reader.skipType(wireType, _depth, tag);
+                    $util.makeProp(message, "$unknowns", false);
+                    (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                 }
                 if (_end !== undefined)
                     throw Error("missing end group");
@@ -23288,6 +24330,7 @@ $root.google = (function() {
                  * @property {number|null} [begin] Annotation begin
                  * @property {number|null} [end] Annotation end
                  * @property {google.protobuf.GeneratedCodeInfo.Annotation.Semantic|null} [semantic] Annotation semantic
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
 
                 /**
@@ -23297,6 +24340,7 @@ $root.google = (function() {
                  * @implements IAnnotation
                  * @constructor
                  * @param {google.protobuf.GeneratedCodeInfo.IAnnotation=} [properties] Properties to set
+                 * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
                  */
                 function Annotation(properties) {
                     this.path = [];
@@ -23384,6 +24428,9 @@ $root.google = (function() {
                         writer.uint32(/* id 4, wireType 0 =*/32).int32(message.end);
                     if (message.semantic != null && Object.hasOwnProperty.call(message, "semantic"))
                         writer.uint32(/* id 5, wireType 0 =*/40).int32(message.semantic);
+                    if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+                        for (var i = 0; i < message.$unknowns.length; ++i)
+                            writer.raw(message.$unknowns[i]);
                     return writer;
                 };
 
@@ -23420,44 +24467,58 @@ $root.google = (function() {
                         throw Error("max depth exceeded");
                     var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.google.protobuf.GeneratedCodeInfo.Annotation();
                     while (reader.pos < end) {
+                        var start = reader.pos;
                         var tag = reader.uint32();
                         if (tag === _end) {
                             _end = undefined;
                             break;
                         }
-                        switch (tag) {
-                        case 8:
-                        case 10: {
-                                if (!(message.path && message.path.length))
-                                    message.path = [];
-                                if ((tag & 7) === 2) {
+                        var wireType = tag & 7;
+                        switch (tag >>>= 3) {
+                        case 1: {
+                                if (wireType === 2) {
+                                    if (!(message.path && message.path.length))
+                                        message.path = [];
                                     var end2 = reader.uint32() + reader.pos;
                                     while (reader.pos < end2)
                                         message.path.push(reader.int32());
-                                } else
-                                    message.path.push(reader.int32());
-                                break;
+                                    continue;
+                                }
+                                if (wireType !== 0)
+                                    break;
+                                if (!(message.path && message.path.length))
+                                    message.path = [];
+                                message.path.push(reader.int32());
+                                continue;
                             }
-                        case 18: {
+                        case 2: {
+                                if (wireType !== 2)
+                                    break;
                                 message.sourceFile = reader.string();
-                                break;
+                                continue;
                             }
-                        case 24: {
+                        case 3: {
+                                if (wireType !== 0)
+                                    break;
                                 message.begin = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 32: {
+                        case 4: {
+                                if (wireType !== 0)
+                                    break;
                                 message.end = reader.int32();
-                                break;
+                                continue;
                             }
-                        case 40: {
+                        case 5: {
+                                if (wireType !== 0)
+                                    break;
                                 message.semantic = reader.int32();
-                                break;
+                                continue;
                             }
-                        default:
-                            reader.skipType(tag & 7, _depth, tag >>> 3);
-                            break;
                         }
+                        reader.skipType(wireType, _depth, tag);
+                        $util.makeProp(message, "$unknowns", false);
+                        (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
                     }
                     if (_end !== undefined)
                         throw Error("missing end group");

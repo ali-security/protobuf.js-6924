@@ -18,6 +18,7 @@ $root.Test1 = (function() {
      * @property {string|null} [field1] Field with a comment.
      * @property {number|null} [field2] Test1 field2
      * @property {boolean|null} [field3] Field with a comment and a <a href="http://example.com/foo/">link</a>
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -30,6 +31,7 @@ $root.Test1 = (function() {
      * @implements ITest1
      * @constructor
      * @param {ITest1=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Test1(properties) {
         if (properties)
@@ -92,6 +94,9 @@ $root.Test1 = (function() {
             writer.uint32(/* id 2, wireType 0 =*/16).uint32(message.field2);
         if (message.field3 != null && Object.hasOwnProperty.call(message, "field3"))
             writer.uint32(/* id 3, wireType 0 =*/24).bool(message.field3);
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -126,30 +131,47 @@ $root.Test1 = (function() {
             _depth = 0;
         if (_depth > $Reader.recursionLimit)
             throw Error("max depth exceeded");
-        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1();
+        var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test1(), value;
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            case 10: {
-                    message.field1 = reader.string();
-                    break;
+            var wireType = tag & 7;
+            switch (tag >>>= 3) {
+            case 1: {
+                    if (wireType !== 2)
+                        break;
+                    if ((value = reader.string()).length)
+                        message.field1 = value;
+                    else
+                        delete message.field1;
+                    continue;
                 }
-            case 16: {
-                    message.field2 = reader.uint32();
-                    break;
+            case 2: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.uint32())
+                        message.field2 = value;
+                    else
+                        delete message.field2;
+                    continue;
                 }
-            case 24: {
-                    message.field3 = reader.bool();
-                    break;
+            case 3: {
+                    if (wireType !== 0)
+                        break;
+                    if (value = reader.bool())
+                        message.field3 = value;
+                    else
+                        delete message.field3;
+                    continue;
                 }
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                break;
             }
+            reader.skipType(wireType, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");
@@ -216,11 +238,14 @@ $root.Test1 = (function() {
             throw Error("max depth exceeded");
         var message = new $root.Test1();
         if (object.field1 != null)
-            message.field1 = String(object.field1);
+            if (typeof object.field1 !== "string" || object.field1.length)
+                message.field1 = String(object.field1);
         if (object.field2 != null)
-            message.field2 = object.field2 >>> 0;
+            if (Number(object.field2) !== 0)
+                message.field2 = object.field2 >>> 0;
         if (object.field3 != null)
-            message.field3 = Boolean(object.field3);
+            if (object.field3)
+                message.field3 = Boolean(object.field3);
         return message;
     };
 
@@ -286,6 +311,7 @@ $root.Test2 = (function() {
      * Properties of a Test2.
      * @exports ITest2
      * @interface ITest2
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
 
     /**
@@ -295,6 +321,7 @@ $root.Test2 = (function() {
      * @implements ITest2
      * @constructor
      * @param {ITest2=} [properties] Properties to set
+     * @property {Array.<Uint8Array>} [$unknowns] Unknown fields preserved while decoding
      */
     function Test2(properties) {
         if (properties)
@@ -327,6 +354,9 @@ $root.Test2 = (function() {
     Test2.encode = function encode(message, writer) {
         if (!writer)
             writer = $Writer.create();
+        if (message.$unknowns != null && Object.hasOwnProperty.call(message, "$unknowns"))
+            for (var i = 0; i < message.$unknowns.length; ++i)
+                writer.raw(message.$unknowns[i]);
         return writer;
     };
 
@@ -363,16 +393,15 @@ $root.Test2 = (function() {
             throw Error("max depth exceeded");
         var end = length === undefined ? reader.len : reader.pos + length, message = _target || new $root.Test2();
         while (reader.pos < end) {
+            var start = reader.pos;
             var tag = reader.uint32();
             if (tag === _end) {
                 _end = undefined;
                 break;
             }
-            switch (tag) {
-            default:
-                reader.skipType(tag & 7, _depth, tag >>> 3);
-                break;
-            }
+            reader.skipType(tag & 7, _depth, tag);
+            $util.makeProp(message, "$unknowns", false);
+            (message.$unknowns || (message.$unknowns = [])).push(reader.raw(start, reader.pos));
         }
         if (_end !== undefined)
             throw Error("missing end group");
