@@ -31,7 +31,7 @@ runs:
       id: conformance-runner-cache
       with:
         path: ${{ inputs.runner-cache }}
-        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}-v2
+        key: protobuf-conformance-runner-${{ runner.os }}-${{ inputs.upstream-version }}-v3
 
     - name: "Check out upstream protobuf"
       shell: bash
@@ -48,15 +48,14 @@ runs:
       if: steps.conformance-runner-cache.outputs.cache-hit != 'true'
       shell: bash
       run: |
-        cmake -S "${{ inputs.upstream-dir }}" -B "$RUNNER_TEMP/protobuf-build" -G Ninja \
+        cmake -S "${{ inputs.upstream-dir }}" -B "${{ inputs.runner-cache }}/build" -G Ninja \
           -DCMAKE_BUILD_TYPE=Release \
           -Dprotobuf_BUILD_CONFORMANCE=ON \
           -Dprotobuf_BUILD_TESTS=OFF \
           -Dprotobuf_BUILD_EXAMPLES=OFF \
           -Dprotobuf_INSTALL=OFF \
           -Dprotobuf_FORCE_FETCH_DEPENDENCIES=ON
-        cmake --build "$RUNNER_TEMP/protobuf-build" --target conformance_test_runner --parallel 2
-        cp "$RUNNER_TEMP/protobuf-build/conformance_test_runner" "${{ inputs.runner-cache }}/conformance_test_runner"
+        cmake --build "${{ inputs.runner-cache }}/build" --target conformance_test_runner --parallel 2
 
     - name: "Generate protobuf.js conformance target"
       shell: bash
@@ -74,7 +73,7 @@ runs:
       run: |
         mkdir -p "${{ inputs.output-dir }}"
         : > "${{ inputs.output-dir }}/failure_list.txt"
-        "${{ inputs.runner-cache }}/conformance_test_runner" \
+        "${{ inputs.runner-cache }}/build/conformance_test_runner" \
           --maximum_edition "${{ inputs.maximum-edition }}" \
           --enforce_recommended \
           --verbose \
@@ -88,7 +87,7 @@ runs:
       shell: bash
       run: |
         set +e
-        "${{ inputs.runner-cache }}/conformance_test_runner" \
+        "${{ inputs.runner-cache }}/build/conformance_test_runner" \
           --maximum_edition "${{ inputs.maximum-edition }}" \
           --enforce_recommended \
           --failure_list "${{ inputs.output-dir }}/failure_list.txt" \
