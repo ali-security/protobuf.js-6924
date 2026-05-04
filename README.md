@@ -9,7 +9,7 @@
 
 **Protocol Buffers** are a language-neutral, platform-neutral, extensible way of serializing structured data for use in communications protocols, data storage, and more, originally designed at Google ([see](https://protobuf.dev/)).
 
-**protobuf.js** is a freestanding JavaScript implementation of Protocol Buffers with TypeScript support for Node.js and the browser. It works with `.proto` files out of the box and can generate optimized encoders and decoders at runtime or emit them statically.
+**protobuf.js** is a standalone JavaScript implementation with TypeScript support for Node.js and the browser. It works with `.proto` files out of the box, can generate specialized encoders and decoders at runtime or emit them statically, and its binary wire-format conformance is enforced in CI with the official Protocol Buffers conformance suite.
 
 ## Getting started
 
@@ -25,7 +25,7 @@ The [command line utility](./cli/) for generating reflection bundles, static cod
 npm install --save-dev protobufjs-cli
 ```
 
-The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc`.
+The CLI is a small but capable standalone protobuf.js toolchain. It does not require `protoc` or a language plugin.
 
 ### Choose a runtime
 
@@ -35,7 +35,7 @@ The CLI is a small but capable standalone protobuf.js toolchain. It does not req
 | `protobufjs/light.js`   | Reflection         | You load JSON bundles or build schemas programmatically
 | `protobufjs/minimal.js` | Static runtime     | You only use generated static code
 
-Builds with reflection include just-in-time code generation. Use the CLI to emit the same optimized code ahead of time and run it on the minimal runtime. The full build includes the light build, and the light build includes the minimal runtime.
+Reflection builds generate specialized code at runtime. The CLI can emit the same optimized code ahead of time for the minimal runtime. The full build includes the light build, and the light build includes the minimal runtime.
 
 ### Browser builds
 
@@ -112,6 +112,19 @@ const object = AwesomeMessage.toObject(message, {
 });
 ```
 
+Common `ConversionOptions` are:
+
+| Option | Effect |
+|--------|--------|
+| `longs: String` | Converts 64-bit values to decimal strings |
+| `longs: Number` | Converts 64-bit values to JS numbers (may lose precision) |
+| `enums: String` | Converts enum values to names |
+| `bytes: String` | Converts bytes to base64 strings |
+| `defaults: true` | Includes default values for unset fields |
+| `arrays: true` | Includes empty arrays for repeated fields |
+| `objects: true` | Includes empty objects for map fields |
+| `oneofs: true` | Includes virtual oneof discriminator properties |
+
 ## Message API
 
 Message types expose focused methods for validation, conversion, and binary I/O.
@@ -126,18 +139,7 @@ Message types expose focused methods for validation, conversion, and binary I/O.
   Converts broader JavaScript input into a message instance.
 
 * **toObject**(message: `Message`, options?: `ConversionOptions`): `object`  
-  Converts a message instance to a plain object for JSON or interoperability. Common options:
-
-  | Option | Effect |
-  |--------|--------|
-  | `longs: String` | Converts 64-bit values to decimal strings |
-  | `longs: Number` | Converts 64-bit values to JS numbers (may lose precision) |
-  | `enums: String` | Converts enum values to names |
-  | `bytes: String` | Converts bytes to base64 strings |
-  | `defaults: true` | Includes default values for unset fields |
-  | `arrays: true` | Includes empty arrays for repeated fields |
-  | `objects: true` | Includes empty objects for map fields |
-  | `oneofs: true` | Includes virtual oneof discriminator properties |
+  Converts a message instance to a plain object for JSON or interoperability.
 
 * **encode**(message: `Message | object`, writer?: `Writer`): `Writer`  
   Encodes a message or equivalent plain object. Call `.finish()` on the returned writer to obtain a buffer.
@@ -298,11 +300,15 @@ For protobuf descriptor interoperability, see [ext/descriptor](./ext/descriptor)
 
 In [CSP](https://w3c.github.io/webappsec-csp/)-restricted environments that disallow unsafe-eval, use generated static code instead of runtime code generation.
 
+## Conformance
+
+protobuf.js runs the official Protocol Buffers conformance suite in CI for **Proto2**, **Proto3** and **Editions**. Binary wire-format conformance is a hard gate and must remain at 100%; the full conformance logs are uploaded as CI artifacts.
+
 ## Performance
 
-Both protobuf.js reflection and static modes execute specialized encoder and decoder functions generated for each message type instead of a generic descriptor-walking interpreter.
+For both reflected schemas and static output, protobuf.js builds specialized encoder and decoder functions for each message type, avoiding descriptor walks during de-/serialization.
 
-The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
+The repository includes a small benchmark for the bundled fixture in [`bench/`](./bench/). It compares protobuf.js reflection and static code against native `JSON.stringify`/`JSON.parse` and [google-protobuf](https://www.npmjs.com/package/google-protobuf) (`protoc-gen-js`). Results depend on hardware, Node.js version, and the message shape, so they should be treated as indicative rather than absolute.
 
 One run on an AMD Ryzen 9 9950X3D with Node.js 24.13.0 and google-protobuf 4.0.2 produced:
 

@@ -1,102 +1,101 @@
 "use strict";
 
-var fs = require("fs");
+var fs = require("fs"),
+    path = require("path"),
+    summary = require("./summary");
 
-var logFile = process.argv[2];
-if (!logFile) {
-    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log]");
+var args = process.argv.slice(2),
+    jsonFile = null,
+    files = [],
+    report,
+    runnerSummary,
+    totals;
+
+args.forEach(function(arg, index) {
+    if (arg === "--json") {
+        jsonFile = args[index + 1];
+    } else if (index === 0 || args[index - 1] !== "--json") {
+        files.push(arg);
+    }
+});
+
+if (!files[0]) {
+    console.error("usage: node tests/conformance/report.js <conformance-log> [test-list-log] [--json <summary-json>]");
     process.exit(1);
 }
 
-if (!fs.existsSync(logFile)) {
-    console.log("## Protobuf conformance");
-    console.log("");
+report = summary.read(files[0], files[1]);
+if (jsonFile) {
+    fs.mkdirSync(path.dirname(jsonFile), { recursive: true });
+    fs.writeFileSync(jsonFile, JSON.stringify(report, null, 2) + "\n");
+}
+
+if (!fs.existsSync(files[0])) {
     console.log("No conformance log found.");
     process.exit(0);
 }
 
-var logBuffer = fs.readFileSync(logFile),
-    log = logBuffer[0] === 0xff && logBuffer[1] === 0xfe
-        ? logBuffer.toString("utf16le")
-        : logBuffer.toString("utf8"),
-    summary = /CONFORMANCE SUITE \w+: (\d+) successes, (\d+) skipped, (\d+) expected failures, (\d+) unexpected failures\./.exec(log),
-    requiredFailures = (log.match(/ERROR, test=Required\./g) || []).length,
-    recommendedFailures = (log.match(/ERROR, test=Recommended\./g) || []).length;
-
-if (!summary) {
-    console.log("## Protobuf conformance");
-    console.log("");
+runnerSummary = report.summary;
+if (!runnerSummary) {
     console.log("No conformance summary found.");
     process.exit(0);
 }
 
-var successes = Number(summary[1]),
-    skipped = Number(summary[2]),
-    expectedFailures = Number(summary[3]),
-    unexpectedFailures = Number(summary[4]),
-    total = successes + unexpectedFailures,
-    totals = readCategoryTotals(process.argv[3], total),
-    totalPercent = total ? (successes / total * 100).toFixed(2) : "0.00",
-    requiredPassing = totals.required ? totals.required - requiredFailures : null,
-    recommendedPassing = totals.recommended ? totals.recommended - recommendedFailures : null,
-    requiredPercent = totals.required ? (requiredPassing / totals.required * 100).toFixed(2) : null,
-    recommendedPercent = totals.recommended ? (recommendedPassing / totals.recommended * 100).toFixed(2) : null,
-    notice = "Conformance: "
-        + (totals.required ? "required " + requiredPercent + "% (" + requiredPassing + "/" + totals.required + "), " : "")
-        + (totals.recommended ? "recommended " + recommendedPercent + "% (" + recommendedPassing + "/" + totals.recommended + "), " : "")
-        + "total " + totalPercent + "% (" + successes + "/" + total + ")";
+totals = report.totals;
+printTable([
+    metric("Binary passing", totals.byFormat.binary),
+    metric("ProtoJSON passing", totals.byFormat.json),
+    metric("Required passing", totals.byRequirement.required),
+    metric("Recommended passing", totals.byRequirement.recommended),
+    metric("Total passing", totals.overall),
+    ["Skipped", String(runnerSummary.skipped)],
+    ["Expected failures", String(runnerSummary.expectedFailures)],
+    ["Unexpected failures", String(runnerSummary.unexpectedFailures)]
+].filter(Boolean));
 
-console.log("## Protobuf conformance");
-console.log("");
-console.log("| Metric | Count |");
-console.log("| --- | ---: |");
-if (totals.required)
-    console.log("| Required passing | " + requiredPercent + "% (" + requiredPassing + "/" + totals.required + ") |");
-else
-    console.log("| Required failures | " + requiredFailures + " |");
-if (totals.recommended)
-    console.log("| Recommended passing | " + recommendedPercent + "% (" + recommendedPassing + "/" + totals.recommended + ") |");
-else
-    console.log("| Recommended failures | " + recommendedFailures + " |");
-console.log("| Total passing | " + totalPercent + "% (" + successes + "/" + total + ") |");
-console.log("| Skipped | " + skipped + " |");
-console.log("| Expected failures | " + expectedFailures + " |");
-console.log("| Unexpected failures | " + unexpectedFailures + " |");
+function metric(label, value) {
+    if (value && value.total)
+        return [label, formatResult(value)];
+    return null;
+}
 
-if (process.env.GITHUB_ACTIONS)
-    console.error("::notice::" + notice);
+function printTable(rows) {
+    var metricWidth = maxWidth(["Metric"].concat(rows.map(function(row) {
+            return row[0];
+        }))),
+        countWidth = maxWidth(["Count"].concat(rows.map(function(row) {
+            return row[1];
+        })));
 
-function readCategoryTotals(testListLogFile, expectedTotal) {
-    var testListLogBuffer,
-        testListLog,
-        firstSuiteEnd,
-        required = Object.create(null),
-        recommended = Object.create(null),
-        match,
-        testNamePattern = /SKIPPED, test=(Required|Recommended)\.([^\r\n ]+)/g;
+    console.log("| " + padRight("Metric", metricWidth) + " | " + padLeft("Count", countWidth) + " |");
+    console.log("| " + repeat("-", metricWidth) + " | " + repeat("-", countWidth) + ": |");
+    rows.forEach(function(row) {
+        console.log("| " + padRight(row[0], metricWidth) + " | " + padLeft(row[1], countWidth) + " |");
+    });
+}
 
-    if (!testListLogFile || !fs.existsSync(testListLogFile))
-        return { required: 0, recommended: 0 };
+function formatResult(value) {
+    return pct(value.passPercent) + " (" + value.passed + "/" + value.total + ")";
+}
 
-    testListLogBuffer = fs.readFileSync(testListLogFile);
-    testListLog = testListLogBuffer[0] === 0xff && testListLogBuffer[1] === 0xfe
-        ? testListLogBuffer.toString("utf16le")
-        : testListLogBuffer.toString("utf8");
-    firstSuiteEnd = testListLog.indexOf("CONFORMANCE SUITE");
-    if (firstSuiteEnd >= 0)
-        testListLog = testListLog.substring(0, firstSuiteEnd);
+function pct(value) {
+    return (value * 100).toFixed(2) + "%";
+}
 
-    while ((match = testNamePattern.exec(testListLog)) !== null) {
-        if (match[1] === "Required")
-            required[match[2]] = true;
-        else
-            recommended[match[2]] = true;
-    }
+function maxWidth(values) {
+    return values.reduce(function(max, value) {
+        return Math.max(max, value.length);
+    }, 0);
+}
 
-    required = Object.keys(required).length;
-    recommended = Object.keys(recommended).length;
-    if (required + recommended !== expectedTotal)
-        return { required: 0, recommended: 0 };
+function padLeft(value, width) {
+    return repeat(" ", width - value.length) + value;
+}
 
-    return { required: required, recommended: recommended };
+function padRight(value, width) {
+    return value + repeat(" ", width - value.length);
+}
+
+function repeat(value, count) {
+    return new Array(count + 1).join(value);
 }
