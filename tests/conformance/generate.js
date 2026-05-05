@@ -8,6 +8,7 @@ var rootDir = path.resolve(__dirname, "../.."),
     upstreamDir = process.env.PROTOBUF_UPSTREAM || path.join(__dirname, "upstream"),
     outputDir = path.join(__dirname, "generated"),
     outputFile = path.join(outputDir, "messages.js"),
+    upstreamUnstableSchemaFile = "conformance/test_protos/test_messages_edition_unstable.proto",
     unstableSchemaFile = path.join(outputDir, "test_messages_edition_unstable.proto"),
     importRoots = [
         "src",
@@ -21,11 +22,7 @@ var rootDir = path.resolve(__dirname, "../.."),
         "src/google/protobuf/test_messages_proto3.proto",
         "conformance/test_protos/test_messages_edition2023.proto",
         "editions/golden/test_messages_proto2_editions.proto",
-        "editions/golden/test_messages_proto3_editions.proto",
-        // Upstream v34+ includes REQUIRED EditionUnstable conformance tests even
-        // with --maximum_edition 2024. Use a local stable-edition copy because
-        // the parser intentionally only supports released editions.
-        unstableSchemaFile
+        "editions/golden/test_messages_proto3_editions.proto"
     ];
 
 if (!fs.existsSync(upstreamDir)) {
@@ -37,11 +34,17 @@ upstreamDir = path.resolve(upstreamDir);
 
 fs.mkdirSync(outputDir, { recursive: true });
 
-fs.writeFileSync(
-    unstableSchemaFile,
-    fs.readFileSync(fromUpstream("conformance/test_protos/test_messages_edition_unstable.proto"), "utf8")
-        .replace("edition = \"UNSTABLE\";", "edition = \"2024\";")
-);
+// Upstream v34+ includes REQUIRED EditionUnstable conformance tests even with
+// --maximum_edition 2024. Optionally use a local stable-edition copy because
+// the parser intentionally only supports released editions.
+if (fs.existsSync(fromUpstream(upstreamUnstableSchemaFile))) {
+    fs.writeFileSync(
+        unstableSchemaFile,
+        fs.readFileSync(fromUpstream(upstreamUnstableSchemaFile), "utf8")
+            .replace("edition = \"UNSTABLE\";", "edition = \"2024\";")
+    );
+    schemaFiles.push(unstableSchemaFile);
+}
 
 runPbjs(importRoots.map(fromUpstream), schemaFiles.map(fromSchemaFile));
 
