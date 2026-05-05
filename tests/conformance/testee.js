@@ -26,6 +26,12 @@ var TEST_TYPES = [
     {
         name: "protobuf_test_messages.editions.TestAllTypesEdition2023",
         type: generated.protobuf_test_messages.editions.TestAllTypesEdition2023
+    },
+    {
+        // Upstream v34+ runs these REQUIRED tests even with --maximum_edition 2024.
+        // Registering the generated type keeps this testee compatible with the harness;
+        name: "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
+        type: generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
     }
 ];
 
