@@ -26,14 +26,16 @@ var TEST_TYPES = [
     {
         name: "protobuf_test_messages.editions.TestAllTypesEdition2023",
         type: generated.protobuf_test_messages.editions.TestAllTypesEdition2023
-    },
-    {
-        // Upstream v34+ runs these REQUIRED tests even with --maximum_edition 2024.
-        // Registering the generated type keeps this testee compatible with the harness;
-        name: "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
-        type: generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
     }
 ];
+
+// Register the local stable-edition copy of UNSTABLE if included by generate.js.
+if (generated.protobuf_test_messages.edition_unstable) {
+    TEST_TYPES.push({
+        name: "protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable",
+        type: generated.protobuf_test_messages.edition_unstable.TestAllTypesEditionUnstable
+    });
+}
 
 TEST_TYPES.forEach(function(testType) {
     if (!testType.type)
